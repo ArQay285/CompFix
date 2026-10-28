@@ -7,8 +7,6 @@ public class Class1
 {
 	public Class1()
 	{
-		//
-		// TODO: Add constructor logic here
-		//
+		//перевірка я то я видалив нашу папку сука
 	}
 }
