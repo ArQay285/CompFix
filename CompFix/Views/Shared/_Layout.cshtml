@@ -19,7 +19,7 @@
 <body>
     <!--Шапка-->
     <header class="mainHeader">
-		<div class="mainHeader__container">
+        <div class="mainHeader__container">
 			<nav class="mainHeader__nav">
                 <!--Лого-->
                 <!--TODO: Зробити ссилкою-->
@@ -52,9 +52,27 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2026 - CompFix - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    <!-- Футер сайту -->
+    <footer class="mainFooter">
+        <div class="container mainFooter__container">
+            <div class="mainFooter__row">
+                <!-- Ліва колонка: Інформація про компанію -->
+                <div class="mainFooter__col">
+                    <span class="mainFooter__brand">CompFix</span>
+                    <p class="mainFooter__text">Усе необхідне для апгрейду та створення ідеального комп'ютера.</p>
+                </div>
+
+                <!-- Права колонка: Посилання -->
+                <div class="mainFooter__links">
+                    <a asp-area="" asp-controller="Home" asp-action="Privacy" class="mainFooter__link">Політика конфіденційності</a>
+                    <a href="" class="mainFooter__link">Контакти</a>
+                </div>
+            </div>
+
+            <!-- Нижня смужка з копирайтом -->
+            <div class="mainFooter__bottom">
+                &copy; 2026 - CompFix. Усі права захищені.
+            </div>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
