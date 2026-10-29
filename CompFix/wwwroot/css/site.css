@@ -141,10 +141,6 @@ ul {
     gap: 20px;
 }
 
-.mainFooter__col {
-    align-items: center;
-}
-
 .mainFooter__brand {
     font-weight: 600;
     font-size: 18px;
