@@ -1,5 +1,23 @@
+:root {
+    --primary-purple: #6C5CE7;
+    --secondary-purple: #A29BFE;
+    --bg-light: #F8F9FA;
+    --text-dark: #2D3436;
+    --accent-teal: #00CEC9;
+}
+
 html {
   font-size: 14px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+img {
+    max-width: 100%; /* Картинка ніколи не буде ширшою за свій батьківський блок */
+    height: auto; /* Висота підлаштовується автоматично, щоб не спотворювати пропорції */
 }
 
 @media (min-width: 768px) {
@@ -18,7 +36,17 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+    font-family: 'Lexend', sans-serif;
+    background-color: var(--bg-light);
+    color: var(--text-dark);
+}
+
+a {
+    text-decoration: none;
+}
+
+ul {
+    list-style: none;
 }
 
 .form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
@@ -28,4 +56,29 @@ body {
 
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
   text-align: start;
+}
+
+.mainHeader {
+    width: 100%;
+    background: var(--bg-light);
+}
+
+.mainHeader__container {
+    padding: 5px, 10px, 5px, 5px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+}
+
+.mainHeader__nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.mainHeader__logo {
+    max-height: 45px;
+    width: auto;
+    object-fit: contain; /* Захищає від деформації */
 }

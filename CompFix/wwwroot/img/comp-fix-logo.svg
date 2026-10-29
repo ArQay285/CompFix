@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 100" width="100%" height="100%">
+  <style>
+    .brand-title {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      font-weight: 800;
+      font-size: 38px;
+      fill: #6C5CE7;
+      letter-spacing: 1px;
+    }
+  </style>
+
+  <!-- Іконка зліва -->
+  <g transform="translate(10, 10)" fill="none" stroke="#6C5CE7" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Корпус/рамка монітора -->
+    <rect x="5" y="10" width="70" height="48" rx="7" ry="7" stroke-width="5" />
+
+    <!-- Ніжка та підставка -->
+    <path d="M 32 58 L 28 72 L 52 72 L 48 58" stroke-width="5" fill="#6C5CE7" />
+    <line x1="18" y1="72" x2="62" y2="72" stroke-width="5" />
+
+    <!-- Кнопка живлення (Power) -->
+    <path d="M 32 29 A 12 12 0 1 0 48 29" stroke-width="5" />
+    <line x1="40" y1="23" x2="40" y2="35" stroke-width="5" />
+  </g>
+
+  <!-- Назва праворуч -->
+  <text x="100" y="61" class="brand-title">CompFix</text>
+</svg>
