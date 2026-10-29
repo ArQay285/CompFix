@@ -61,10 +61,11 @@ ul {
 .mainHeader {
     width: 100%;
     background: var(--bg-light);
+    border-bottom: 2px solid rgba(108, 92, 231, 0.15);
 }
 
 .mainHeader__container {
-    padding: 5px, 10px, 5px, 5px;
+    margin-inline: 27px;
     height: 60px;
     display: flex;
     align-items: center;
@@ -77,8 +78,40 @@ ul {
     width: 100%;
 }
 
+.mainHeader__list {
+    padding: 0px;
+    margin: 0px;
+    gap: 15px;
+    display: flex;
+    align-items: center;
+}
+
+.mainHeader__list-link {
+    
+}
+
+.mainHeader__list-link-img {
+    height: 40px;
+    width: 40px;
+    padding: 8px;
+    border-radius: 8px;
+    object-fit: contain;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+    .mainHeader__list-link-img:hover {
+        background-color: rgba(108, 92, 231, 0.1)
+    }
+
 .mainHeader__logo {
-    max-height: 45px;
+
+}
+
+.mainHeader__logo-img {
+    max-height: 50px;
     width: auto;
     object-fit: contain; /* Захищає від деформації */
+    display: block;
+    cursor: pointer;
 }

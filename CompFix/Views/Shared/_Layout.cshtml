@@ -21,20 +21,31 @@
     <header class="mainHeader">
 		<div class="mainHeader__container">
 			<nav class="mainHeader__nav">
-                <!---->
-                <img src="~/img/comp-fix-logo.svg" class="mainHeader__logo">
-                <!---->
+                <!--Лого-->
+                <!--TODO: Зробити ссилкою-->
+                <img src="~/img/comp-fix-logo.svg" class="mainHeader__logo-img">
+                <!--Кнопки-->
 				<ul class="mainHeader__list">
-					<il>
-
-                    </il>
-                    <il>
-
-                    </il>
+					<li>
+						<a class="mainHeader__list-link">
+                            <img class="mainHeader__list-link-img" src="~/img/header/favorite-heart.svg">
+                        </a>
+                    </li>
+                    <li>
+                        <a class="mainHeader__list-link">
+                            <img class="mainHeader__list-link-img" src="~/img/header/shopping-cart.svg">
+                        </a>
+                    </li>
+					<li>
+                        <a class="mainHeader__list-link">
+							<img class="mainHeader__list-link-img" src="~/img/header/account-circle.svg">
+                        </a>
+                    </li>
                 </ul>
             </nav>
         </div>
     </header>
+
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
