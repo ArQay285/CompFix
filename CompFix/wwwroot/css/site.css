@@ -113,7 +113,7 @@ ul {
 
 .mainHeader__logo-img {
     max-height: 50px;
-    width: auto;
+    width: 190px;/*Вказав точну ширину*/
     object-fit: contain; /* Захищає від деформації */
     display: block;
     cursor: pointer;
