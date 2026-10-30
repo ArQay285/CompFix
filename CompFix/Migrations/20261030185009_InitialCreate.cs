@@ -11,15 +11,17 @@ namespace CompFix.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "DataBaseInfo",
+                name: "TestClass",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1")
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Number = table.Column<int>(type: "int", nullable: false),
+                    Sentens = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DataBaseInfo", x => x.Id);
+                    table.PrimaryKey("PK_TestClass", x => x.Id);
                 });
         }
 
@@ -27,7 +29,7 @@ namespace CompFix.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "DataBaseInfo");
+                name: "TestClass");
         }
     }
 }
