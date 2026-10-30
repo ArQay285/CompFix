@@ -1,5 +1,6 @@
-using Microsoft.EntityFrameworkCore;
 using CompFix;
+using CompFix.Models;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +10,9 @@ builder.Services.AddControllersWithViews();
 // Додавання підключення до бази даних
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// Зв'язуємо секцію "CompanyInfo" з класом "CompanySettings"
+builder.Services.Configure<CompanyInfo>(builder.Configuration.GetSection("CompanyInfo"));
 
 var app = builder.Build();
 

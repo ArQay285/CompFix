@@ -1,4 +1,11 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.Extensions.Options
+@inject IOptions<CompFix.Models.CompanyInfo> CompanyInfo
+
+@{
+    var company = CompanyInfo.Value;
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -8,9 +15,9 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/CompFix.styles.css" asp-append-version="true" />
-    <!--Фавікон-->
+    <!-- Фавікон -->
     <link rel="icon" type="image/svg" href="~/img/favicon.svg">
-    <!--Шрифт-->
+    <!-- Шрифт -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap" rel="stylesheet">
@@ -62,11 +69,14 @@
                     <span class="mainFooter__brand">CompFix</span>
                     <p class="mainFooter__text">Усе необхідне для апгрейду та створення ідеального комп'ютера. Тільки перевірені бренди, новітні комплектуючі та готові рішення для роботи і геймінгу.</p>
                 </div>
-
+                <!-- Контакти -->
+                <div class="mainFooter__contacts">
+                    <span class="mainFooter__contact">Контакти</span>
+                    <p class="mainFooter__text">Тел: @company.Phone  |  Email: @company.Email</p>
+                </div>
                 <!-- Посилання -->
                 <div class="mainFooter__links">
                     <a asp-area="" asp-controller="Home" asp-action="Privacy" class="mainFooter__link">Політика конфіденційності</a>
-                    <a href="" class="mainFooter__link">Контакти</a>
                 </div>
             </div>
 

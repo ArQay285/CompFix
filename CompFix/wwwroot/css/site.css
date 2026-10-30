@@ -141,7 +141,7 @@ ul {
     gap: 20px;
 }
 
-.mainFooter__brand {
+.mainFooter__brand, .mainFooter__contact {
     font-weight: 600;
     font-size: 18px;
     color: var(--primary-purple);
