@@ -12,6 +12,7 @@ namespace CompFix
         }
 
         // Говоримо EF Core створити таблицю для нашої моделі
-        public DbSet<TestClass> TestClass { get; set; }
+        public DbSet<Product> Products { get; set; }
+        //public DbSet<CompanyInfo> CompanyInfo { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 using CompFix;
 using CompFix.Models;
+using CompFix.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,7 +14,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 // Зв'язуємо секцію "CompanyInfo" з класом "CompanySettings"
 builder.Services.Configure<CompanyInfo>(builder.Configuration.GetSection("CompanyInfo"));
-
+builder.Services.AddScoped(typeof(ControlBaseDate<>));
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
