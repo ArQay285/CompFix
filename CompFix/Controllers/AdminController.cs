@@ -4,6 +4,8 @@ using CompFix.Models;
 using CompFix.Services;
 namespace CompFix.Controllers
 {
+    //Контролер для адміністратора, який дозволяє додавати, редагувати та видаляти товари.
+    //TODO: розширити функціонал контролера для роботи з користувачами(коли буде готовий клас Users)
     public class AdminController : Controller
     {
 
