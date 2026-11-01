@@ -14,5 +14,7 @@ namespace CompFix
         // Говоримо EF Core створити таблицю для нашої моделі
         public DbSet<Product> Products { get; set; }
         //public DbSet<CompanyInfo> CompanyInfo { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderItem> OrderItems { get; set; }
     }
 }
