@@ -12,7 +12,7 @@ namespace CompFix.Models
     {
         public int Id { get; set; }
         [Required(ErrorMessage = "Введіть будь ласка текст")]
-        [StringLength(100,ErrorMessage ="Назва немає перевищувати більше 100 слів")]
+        [StringLength(100,ErrorMessage ="Назва немає перевищувати більше 100 сиволів")]
         public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         [Required(ErrorMessage = "Вкажіть ціну")]
@@ -23,6 +23,12 @@ namespace CompFix.Models
         public int Quantity { get; set; }
         public ItemCondition Condition { get; set; } = ItemCondition.New;
         public DateTime CreatedAt { get; set; } = DateTime.Now;
+        //  Поле знижки у відсотках (від 0 до 100)
+        public int Discount { get; set; } = 0;
+        // Обчислювана ціна з урахуванням знижки
+        public decimal DiscountedPrice => Price * (1 - (decimal)Discount / 100);
+        //Прапорець видимості(true = показувати покупцям, false = приховано)
+        public bool IsAvailable { get; set; } = true;
 
     }
 }

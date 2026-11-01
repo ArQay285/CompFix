@@ -8,7 +8,7 @@ namespace CompFix.Services
 {
     public class ControlBaseDate<T> where T : class
     {
-        private readonly AppDbContext? db;
+        private readonly AppDbContext db;
         public ControlBaseDate(AppDbContext db)
         {
             this.db = db;
