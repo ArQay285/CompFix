@@ -1,6 +1,7 @@
 using CompFix;
 using CompFix.Models;
 using CompFix.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,8 +13,20 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+// 2. Підключення Identity з підтримкою ролей
+builder.Services.AddDefaultIdentity<IdentityUser>(options => {
+    options.SignIn.RequireConfirmedAccount = false;
+})
+.AddRoles<IdentityRole>() // Додаємо підтримку ролей ("admin")
+.AddEntityFrameworkStores<AppDbContext>();
+
+builder.Services.ConfigureApplicationCookie(options => {
+    options.LoginPath = "/admin/login"; // Якщо неавторизований іде в /admin, його кидає сюди
+});
+
 // Зв'язуємо секцію "CompanyInfo" з класом "CompanySettings"
 builder.Services.Configure<CompanyInfo>(builder.Configuration.GetSection("CompanyInfo"));
+
 builder.Services.AddScoped(typeof(ControlBaseDate<>));
 var app = builder.Build();
 
@@ -27,6 +40,7 @@ if (!app.Environment.IsDevelopment()) {
 app.UseHttpsRedirection();
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapStaticAssets();
