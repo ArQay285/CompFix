@@ -1,0 +1,35 @@
+﻿@model AdminLoginViewModel
+@{
+	ViewData["Title"] = "Вхід в адмін панель";
+}
+
+<body>
+	<div class="login__container">
+		<h2>Вхід в адмін панель</h2>
+		<form asp-action="AdminLogin" asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post" class="login__form">
+			<!-- Виведення помилок валідації -->
+			<div asp-validation-summary="All" class="login__validation-summary"></div>
+			<!-- Поле для імені адміністратора -->
+			<div class="login__form-group">
+				<label asp-for="UserName" class="login__form-label">Логін адміністратора</label>
+				<input asp-for="UserName" autocomplete="username" class="login__form-input" placeholder="Введіть логін" />
+				<span asp-validation-for="UserName" class="login__validation-for"></span>
+			</div>
+			<!-- Поле для пароля -->
+			<div class="login__form-group">
+				<label asp-for="Password" class="login__form-label">Пароль</label>
+				<input asp-for="Password" autocomplete="current-password" class="login__form-input" placeholder="Введіть пароль" />
+				<span asp-validation-for="Password" class="login__validation-for"></span>
+			</div>
+			<!-- Чекбокс запам'ятати мене -->
+			<div class="login__checkbox-group">
+				<input asp-for="RememberMe" />
+				<label asp-for="RememberMe">Запам'ятати мене?</label>
+			</div>
+			<!-- Кнопка для відправки форми -->
+			<div class="login__form-button-group">
+				<button type="submit" class="login__btn-submit">Увійти</button>
+			</div>
+		</form>
+	</div>
+</body>

@@ -16,6 +16,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 // 2. Підключення Identity з підтримкою ролей
 builder.Services.AddDefaultIdentity<IdentityUser>(options => {
     options.SignIn.RequireConfirmedAccount = false;
+    options.Password.RequireUppercase = false;
 })
 .AddRoles<IdentityRole>() // Додаємо підтримку ролей ("admin")
 .AddEntityFrameworkStores<AppDbContext>();
@@ -29,6 +30,36 @@ builder.Services.Configure<CompanyInfo>(builder.Configuration.GetSection("Compan
 
 builder.Services.AddScoped(typeof(ControlBaseDate<>));
 var app = builder.Build();
+
+// Створює роль admin
+using (var scope = app.Services.CreateScope()) { // Створює область для отримання сервісів
+    var services = scope.ServiceProvider;
+    var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
+    var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+
+    // Створює роль Admin, якщо її не існує
+    if (!await roleManager.RoleExistsAsync("admin")) {
+        await roleManager.CreateAsync(new IdentityRole("admin"));
+    }
+
+    // Створює адміністратора
+    string adminEmail = "admin@compfix.ua";
+    string adminName = "admin"; // Унікальне ім'я для входу
+    var adminUser = await userManager.FindByNameAsync(adminName);
+    
+    if (adminUser == null) {
+        var newAdmin = new IdentityUser {
+            UserName = adminName,
+            Email = adminEmail,
+            EmailConfirmed = true
+        };
+
+        var result = await userManager.CreateAsync(newAdmin, "admin4321*"); // Встановлює пароль для адміністратора
+        if (result.Succeeded) {
+            await userManager.AddToRoleAsync(newAdmin, "admin");
+        }
+    }
+}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment()) {

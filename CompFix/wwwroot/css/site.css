@@ -1,9 +1,11 @@
 :root {
     --primary-purple: #6C5CE7;
     --secondary-purple: #A29BFE;
+    --hover-purple: #5b4cdb;
     --bg-light: #F8F9FA;
     --text-dark: #2D3436;
     --accent-teal: #00CEC9;
+    --validation-red: #d9534f;
 }
 
 html {
@@ -23,18 +25,18 @@ img {
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
@@ -44,21 +46,52 @@ body {
     margin-bottom: 0;
 }
 
+button {
+    cursor: pointer;
+    height: 40px;
+    font-weight: 400;
+    color: white;
+    background-color: var(--primary-purple);
+    border: none;
+    border-radius: 8px;
+    padding: 0 15px;
+    transition: background-color 0.2s ease;
+}
+
+    button:hover {
+        background-color: var(--hover-purple);
+    }
+
+h2 {
+    font-weight: 600;
+    color: var(--primary-purple);
+}
+
 a {
     text-decoration: none;
 }
 
 ul {
     list-style: none;
+    padding: 0;
+}
+
+input[type="checkbox"] {
+    accent-color: var(--primary-purple);
+    cursor: pointer;
 }
 
 .form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
-  color: var(--bs-secondary-color);
-  text-align: end;
+    color: var(--bs-secondary-color);
+    text-align: end;
 }
 
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
-  text-align: start;
+    text-align: start;
+}
+/* Layout */
+.container {
+    margin-inline: 54px;
 }
 
 .mainHeader {
@@ -90,7 +123,6 @@ ul {
 }
 
 .mainHeader__list-link {
-    
 }
 
 .mainHeader__list-link-img {
@@ -108,12 +140,11 @@ ul {
     }
 
 .mainHeader__logo {
-
 }
 
 .mainHeader__logo-img {
     max-height: 50px;
-    width: 190px;/*Вказав точну ширину*/
+    width: 190px; /*Вказав точну ширину*/
     object-fit: contain; /* Захищає від деформації */
     display: block;
     cursor: pointer;
@@ -175,4 +206,69 @@ ul {
     border-top: 1px solid #dfe6e9;
     font-size: 13px;
     color: #b2bec3;
+}
+
+/* Admin Login */
+.login__container {
+    margin-block: 50px 14px;
+}
+
+.login__form {
+    max-width: 400px;
+    margin-left: 12px;
+}
+
+.login__validation-summary:not(:empty) {
+    color: var(--validation-red);
+    /*border: 1px solid #f5c6cb;*/
+    padding: 10px 10px 0 10px;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    font-size: 13px;
+}
+
+.login__validation-for {
+    color: var(--validation-red);
+    font-size: 13px;
+    margin-top: 4px;
+}
+
+.login__form-group {
+    display: flex;
+    flex-direction: column;
+    margin: 0 0 12px 10px;
+}
+
+.login__form-label {
+    margin-bottom: 4px;
+    font-weight: bold;
+}
+
+    .login__form-group input[type="text"],
+    .login__form-group input[type="password"] {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        font-size: 14px;
+        box-sizing: border-box;
+        transition: border-color 0.2s;
+    }
+
+    .login__form-group input:focus {
+        outline: solid 1px var(--primary-purple);
+    }
+
+.login__checkbox-group {
+    padding-bottom: 12px;
+    font-weight: bold;
+}
+
+.login__form-button-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 12px;
+}
+
+.login__btn-submit {
 }
