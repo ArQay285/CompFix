@@ -26,14 +26,17 @@ namespace CompFix.Controllers
             return View();
         }
 
-        //[HttpGet("allproducts")]
-        //// 3. Сторінка зі списком усіх товарів
-        //public async Task<IActionResult> AllProducts()
-        //{
-        //    var products = await productRepo.GetAllAsync();
-        //    return View(products);
+        [HttpGet("allproducts")]
+        /// <summary>
+        /// Сторінка зі списком усіх товарів
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IActionResult> AllProducts()
+        {
+            var products = await _productRepo.GetAllAsync();
+            return View(products);
 
-        //}
+        }
 
         [HttpGet("getbyid/{id}")]
         public async Task<IActionResult> GetById(int id)
@@ -56,7 +59,7 @@ namespace CompFix.Controllers
             if (ModelState.IsValid)
             {
                 await _productRepo.AddAsync(product);
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(AllProducts));
             }
 
             return View(product);
@@ -77,7 +80,7 @@ namespace CompFix.Controllers
             if (ModelState.IsValid)
             {
                 await _productRepo.UpdateAsync(product);
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(AllProducts));
             }
             return View(product);
         }
@@ -88,7 +91,7 @@ namespace CompFix.Controllers
             var product = await _productRepo.GetByIdAsync(id);
             if (product == null) return NotFound("Товар не знайдено");
             await _productRepo.RemoveAsync(id);
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(AllProducts));
         }
 
         [HttpPost]
@@ -107,7 +110,7 @@ namespace CompFix.Controllers
 
             product.Discount = discount;
             await _productRepo.UpdateAsync(product);
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(AllProducts));
         }
 
         [HttpPost]
@@ -120,7 +123,7 @@ namespace CompFix.Controllers
             }
             product.IsAvailable = !product.IsAvailable;
             await _productRepo.UpdateAsync(product);
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(AllProducts));
         }
 
 
