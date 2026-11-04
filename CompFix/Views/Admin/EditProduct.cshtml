@@ -1,6 +1,92 @@
-﻿namespace CompFix.Views.Admin
-{
-    public class EditProduct
-    {
-    }
+﻿@model CompFix.Models.Product
+@{
+    ViewData["Title"] = "Редагувати товар";
 }
+<style>
+    footer .row,
+    footer .container > div:first-child,
+    footer .footer-top {
+        display: none !important;
+    }
+</style>
+
+<div class="container">
+<div class="product-form__title-wrapper">
+    <h1 class="product-form__title">Редагувати товар 🖥️</h1>
+</div>
+    <form asp-controller="Admin" asp-action="EditProduct" method="post" class="product-form">
+    <input type="hidden" asp-for="Id" />
+    <div  asp-validation-summary="ModelOnly" class="product-form__validation "> </div>
+    <!-- Назва товару -->
+<div class="name-product">
+<label asp-for="Name" class="form-label">Назва товару</label>
+<input asp-for="Name" class="form-control" placeholder="Введіть назву товару"/>
+<span asp-validation-for="Name" class="product-form__error"></span>
+</div>
+<!-- Опис -->
+<div class="name-product">
+    <label asp-for="Description" class="form-label">Опис</label>
+    <textarea asp-for="Description" class="product-form__des" placeholder="Введіть опис товару" rows="3"></textarea>
+    <span asp-validation-for="Description" class="product-form__error"></span>
+</div>
+<!-- Ціна та Кількість -->
+<div class="product-form__row">
+<div class="name-product product-form__col">
+<label asp-for="Price" class="product-form__label">Ціна ₴</label>
+<input asp-for="Price" type="number" step="0.01" class="form-control" placeholder="Введіть ціну"/>
+<span asp-validation-for="Price" class="product-form__error"></span>
+</div>
+<div class="name-product product-form__col">
+    <label asp-for="Quantity" class="product-form__label"> Кількість </label>
+    <input asp-for="Quantity" type="number" class="form-control" placeholder="Введіть кількість" />
+    <span asp-validation-for="Quantity" class="product-form__error"></span>
+</div>
+</div>
+<!-- Стан та Знижка -->
+<div class="product-form__row">
+<div class="name-product product-form__col">
+    <label asp-for="Condition" class="product-form__label">Стан</label>
+    <select asp-for="Condition" class="product-form__select">
+    <option value="0" class="variety">Новий</option>
+    <option value="1" class="variety">Вживаний</option>
+    <option value="2" class="variety" >Після ремонту</option>
+    </select>
+    <span asp-validation-for="Condition" class="product-form__error"></span>
+</div>
+<div class="name-product product-form__col">
+     <label asp-for="Discount" class="product-form__label">Знижка %</label>
+     <input asp-for="Discount" type="number" min="0" max="100" class="form-control" placeholder="Введіть знижку"/>
+     <span asp-validation-for="Discount" class="product-form__error"></span>
+</div>
+</div>
+<!-- Перемикач наявності та Блок завантаження фото -->
+<div class="product-form__row align-items-start">
+            <div class="product-form__col"></div>
+<div class="product-form__col">
+<div class="name-product">
+    <label class="product-form__label">Наявність</label>
+    <label class="product-form__toggle">
+     <input asp-for="IsAvailable" type="checkbox" />
+     <span class="product-form__toggle-slider"></span>
+     <span class="product-form__toggle-text">Доступно для замовлення</span>
+ </label>
+
+ </div>
+ <!-- TODO:Доробити логіку з додваванням картінки -->
+
+</div>
+</div>
+<!-- Кнопки дій -->
+<div class="product-form__actions">
+    <a asp-action="AllProducts" class="product-form__btn product-form__btn--cancel">Скасувати</a>
+    <button type="submit" class="product-form__btn product-form__btn--submit">Оновити</button>
+</div>
+</form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
+
+    

@@ -53,7 +53,7 @@ namespace CompFix.Controllers
         {
             return View();
         }
-        [HttpPost]
+        [HttpPost("addproduct")]
         public async Task<IActionResult> AddProduct(Product product)
         {
             if (ModelState.IsValid)
@@ -74,7 +74,7 @@ namespace CompFix.Controllers
 
             return View(product);
         }
-        [HttpPost]
+        [HttpPost("editproduct/{id}")]
         public async Task<IActionResult> EditProduct(Product product)
         {
             if (ModelState.IsValid)
