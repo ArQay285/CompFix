@@ -89,11 +89,8 @@ input[type="checkbox"] {
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
     text-align: start;
 }
-/* Layout */
-.container {
-    margin-inline: 54px;
-}
 
+/* Layout */
 .mainHeader {
     width: 100%;
     background: var(--bg-light);
@@ -155,9 +152,11 @@ input[type="checkbox"] {
     border-top: 2px solid rgba(108, 92, 231, 0.3);
     padding-block: 30px 20px;
     margin-top: 40px;
+
 }
 
 .mainFooter__container {
+    margin-inline: 54px;
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -280,9 +279,10 @@ input[type="checkbox"] {
     border-color: var(--primary-purple);
     box-shadow: 0 0 0 4px rgba(108, 92, 231, 0.20);
 }
-.Form-for-add-product {
-    max-width: 760px;
+
+.product-form__container {
     margin: 40px auto;
+    max-width: 760px;
 }
 .product-form__title {
     font-size: 32px;
