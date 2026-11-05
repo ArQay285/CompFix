@@ -280,7 +280,7 @@ input[type="checkbox"] {
     border-color: var(--primary-purple);
     box-shadow: 0 0 0 4px rgba(108, 92, 231, 0.20);
 }
-.container {
+.Form-for-add-product {
     max-width: 760px;
     margin: 40px auto;
 }
