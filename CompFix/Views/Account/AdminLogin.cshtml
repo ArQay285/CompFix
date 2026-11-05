@@ -8,7 +8,7 @@
 		<h2>Вхід в адмін панель</h2>
 		<form asp-action="AdminLogin" asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post" class="login__form">
 			<!-- Виведення помилок валідації -->
-			<div asp-validation-summary="All" class="login__validation-summary"></div>
+			<div asp-validation-summary="ModelOnly" class="login__validation-summary"></div>
 			<!-- Поле для імені адміністратора -->
 			<div class="login__form-group">
 				<label asp-for="UserName" class="login__form-label">Логін адміністратора</label>

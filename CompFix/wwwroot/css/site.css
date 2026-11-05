@@ -4,6 +4,7 @@
     --hover-purple: #5b4cdb;
     --bg-light: #F8F9FA;
     --text-dark: #2D3436;
+    --text-grey: #636e72;
     --accent-teal: #00CEC9;
     --validation-red: #d9534f;
 }
@@ -147,12 +148,12 @@ input[type="checkbox"] {
     cursor: pointer;
 }
 
+/* Головний футер */
 .mainFooter {
     background-color: var(--bg-light);
     border-top: 2px solid rgba(108, 92, 231, 0.3);
     padding-block: 30px 20px;
     margin-top: 40px;
-
 }
 
 .mainFooter__container {
@@ -180,7 +181,7 @@ input[type="checkbox"] {
 .mainFooter__text {
     margin-top: 5px;
     margin-bottom: 0;
-    color: #636e72;
+    color: var(--text-grey);
 }
 
 .mainFooter__links {
@@ -206,6 +207,153 @@ input[type="checkbox"] {
     font-size: 13px;
     color: #b2bec3;
 }
+
+/* Виїздна панель(Drawer) */
+/* --- Затемнення фону --- */
+.drawer-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(2px);
+    z-index: 1040;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+    .drawer-overlay.active {
+        opacity: 1;
+        visibility: visible;
+    }
+
+/* Drawer */
+.account-drawer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 340px;
+    max-width: 85vw;
+    height: 100vh;
+    background-color: #ffffff;
+    z-index: 1050;
+    box-shadow: -4px 0 20px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: column;
+    transform: translateX(100%); /* Початково захована за правим краєм */
+    transition: transform 0.3s ease-in-out;
+}
+
+    .account-drawer.open {
+        transform: translateX(0); /* Виїжджає на екран */
+    }
+
+.account-drawer__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--primary-purple);
+    padding: 8px;
+}
+
+.account-drawer__close-btn {
+    background-color: none;
+    height: 40px;
+    width: 40px;
+    font-size: 22px;
+    padding-bottom: 2px;
+}
+
+.account-drawer__logo-img {
+    max-height: 40px;
+    width: 157px; /*Вказав точну ширину*/
+    object-fit: contain; /* Захищає від деформації */
+    display: block;
+    cursor: pointer;
+    background-color: var(--secondary-purple);
+    border-radius: 8px;
+}
+
+.account-drawer__content {
+    padding: 20px 25px;
+}
+
+.account-drawer__admin-container, .account-drawer__user-container {
+    display: flex;
+    align-items: center;
+    border: 2px solid var(--primary-purple);
+    padding: 11px 13px;
+    border-radius: 30px;
+}
+
+.account-drawer__account-img {
+    width: 45px;
+    height: 45px;
+}
+
+.account-drawer__admin-info, .account-drawer__user-info {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    box-sizing: border-box;
+    justify-content: center;
+    align-items: center;
+}
+
+.account-drawer__name {
+    font-weight: 600;
+    font-size: 18px;
+    color: var(--primary-purple);
+}
+
+.account-drawer__email {
+    font-size: 12px;
+    color: var(--text-grey);
+}
+
+.account-drawer__action-list {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 12px;
+    padding: 20px 0;
+    margin: 0;
+    width: 100%;
+}
+
+    .account-drawer__action-list li {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
+    .account-drawer__action-list form {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
+.account-drawer__btn {
+    cursor: pointer;
+    height: 40px;
+    width: 100%;
+    padding: 0;
+    font-weight: 400;
+    color: white;
+    background-color: var(--primary-purple);
+    border: none;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.2s ease;
+}
+
+    .account-drawer__btn:hover {
+        background-color: var(--hover-purple)
+    }
 
 /* Admin Login */
 .login__container {
@@ -243,20 +391,20 @@ input[type="checkbox"] {
     font-weight: bold;
 }
 
-    .login__form-group input[type="text"],
-    .login__form-group input[type="password"] {
-        width: 100%;
-        padding: 12px;
-        border: 1px solid #ccc;
-        border-radius: 8px;
-        font-size: 14px;
-        box-sizing: border-box;
-        transition: border-color 0.2s;
-    }
+.login__form-group input[type="text"],
+.login__form-group input[type="password"] {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 14px;
+    box-sizing: border-box;
+    transition: border-color 0.2s;
+}
 
-    .login__form-group input:focus {
-        outline: solid 1px var(--primary-purple);
-    }
+.login__form-group input:focus {
+    outline: solid 1px var(--primary-purple);
+}
 
 .login__checkbox-group {
     padding-bottom: 12px;
@@ -271,7 +419,8 @@ input[type="checkbox"] {
 
 .login__btn-submit {
 }
-/*Для адміністративної панелі*/
+
+/*Для адміністраторської панелі*/
 .form-control:focus,
 .product-form__des:focus,
 .product-form__select:focus {
@@ -284,6 +433,7 @@ input[type="checkbox"] {
     margin: 40px auto;
     max-width: 760px;
 }
+
 .product-form__title {
     font-size: 32px;
     font-weight: 700;
@@ -291,34 +441,41 @@ input[type="checkbox"] {
     font-family: 'Lexend', sans-serif;
     color: var(--primary-purple);
 }
+
 .product-form {
     display: flex;
     flex-direction: column;
     gap: 14px;
 }
+
 .product-form__validation {
     color: var(--validation-red);
     font-size: 13px;
 }
+
 .name-product {
     display: flex;
     flex-direction: column;
     gap: 1px;
 }
+
 .form-label {
     font-weight: 600;
     font-size: 15px;
 }
+
 .form-control {
     width: 100%;
     padding: 10px 14px;
     border: 1.5px solid #dcdde1;
     border-radius: 10px;
 }
-.product-form__error{
+
+.product-form__error {
     color: var(--validation-red);
     font-size: 15px;
 }
+
 .product-form__des {
     resize: vertical;
     min-height: 100px;
@@ -326,16 +483,20 @@ input[type="checkbox"] {
     padding: 10px 14px;
     border: 1.5px solid #dcdde1;
 }
+
 .product-form__row {
     display: flex;
     gap: 16px;
 }
-.product-form__col{
+
+.product-form__col {
     flex: 1;
 }
-.variety{
+
+.variety {
     color: var(--primary-purple);
 }
+
 .product-form__select {
     width: 100%;
     font-weight: 600;
@@ -348,19 +509,21 @@ input[type="checkbox"] {
     cursor: pointer;
     appearance: none;
 }
+
 .product-form__toggle {
     display: flex;
     align-items: center;
     gap: 10px;
     cursor: pointer;
     position: relative;
-
 }
+
     .product-form__toggle input {
         opacity: 0;
         width: 0;
-        height:0;
+        height: 0;
     }
+
 .product-form__toggle-slider {
     width: 44px;
     height: 24px;
@@ -369,6 +532,7 @@ input[type="checkbox"] {
     transition: background-color 0.3s;
     position: relative;
 }
+
     .product-form__toggle-slider::before {
         content: "";
         position: absolute;
@@ -377,24 +541,28 @@ input[type="checkbox"] {
         border-radius: 50%;
         background-color: white;
         top: 3px;
-        left: 3px; 
+        left: 3px;
         transition: transform 0.3s;
     }
+
 .product-form__toggle input:checked + .product-form__toggle-slider {
     background-color: var(--primary-purple);
 }
-.product-form__toggle input:checked + .product-form__toggle-slider::before {
-    transform: translateX(20px);
-}
+
+    .product-form__toggle input:checked + .product-form__toggle-slider::before {
+        transform: translateX(20px);
+    }
+
 .product-form__actions {
     display: flex;
     justify-content: space-between;
     gap: 12px;
     margin-top: 24px;
 }
+
 .product-form__btn {
-    width: 160px; 
-    height: 44px; 
+    width: 160px;
+    height: 44px;
     padding: 0;
     font-weight: 600;
     cursor: pointer;
@@ -405,6 +573,7 @@ input[type="checkbox"] {
     transition: all 0.2s ease;
     box-sizing: border-box;
 }
+
 .product-form__btn--submit {
     background-color: var(--primary-purple);
     color: #ffffff;
@@ -415,6 +584,7 @@ input[type="checkbox"] {
         background-color: #5b4cc4;
         box-shadow: 0 4px 12px rgba(108, 92, 231, 0.3);
     }
+
 .product-form__btn--cancel {
     background-color: transparent;
     color: var(--text-dark);
@@ -422,9 +592,11 @@ input[type="checkbox"] {
     border-radius: 6px;
 }
 
-.product-form__btn--cancel:hover {
+    .product-form__btn--cancel:hover {
         background-color: #f5f6fa;
-        border-color: #c8d6e5;}
+        border-color: #c8d6e5;
+    }
+
 .product-form__title-wrapper {
     border: 1.5px solid var(--primary-purple);
     border-radius: 40px;

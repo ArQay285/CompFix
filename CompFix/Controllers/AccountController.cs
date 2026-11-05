@@ -54,12 +54,12 @@ namespace CompFix.Controllers
 
                 }
                 else {
-                    ModelState.AddModelError(string.Empty, "Цей акаунт не має прав адміністратора.");
+                    ModelState.AddModelError(string.Empty, "Цей акаунт не має прав адміністратора");
                     return View(model);
                 }
             }
 
-            ModelState.AddModelError(string.Empty, "Невірний логін або пароль.");
+            ModelState.AddModelError(string.Empty, "Невірний логін або пароль");
             return View(model);
         }
 
@@ -69,7 +69,7 @@ namespace CompFix.Controllers
         public async Task<IActionResult> AdminLogout()
         {
             await _signInManager.SignOutAsync();
-            return RedirectToAction("AdminLogin");
+            return RedirectToAction("Index", "Home");
         }
     }
 }

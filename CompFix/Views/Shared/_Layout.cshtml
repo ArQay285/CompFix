@@ -1,92 +1,159 @@
 ﻿@inject IOptions<CompFix.Models.CompanyInfo> CompanyInfo
 @{
-    var company = CompanyInfo.Value;
+	var company = CompanyInfo.Value;
 }
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - CompFix</title>
-    <script type="importmap"></script>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/CompFix.styles.css" asp-append-version="true" />
-    <!-- Фавікон -->
-    <link rel="icon" type="image/svg" href="~/img/favicon.svg">
-    <!-- Шрифт -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap" rel="stylesheet">
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>@ViewData["Title"] - CompFix</title>
+	<script type="importmap"></script>
+	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+	<link rel="stylesheet" href="~/CompFix.styles.css" asp-append-version="true" />
+	<!-- Фавікон -->
+	<link rel="icon" type="image/svg" href="~/img/favicon.svg">
+	<!-- Шрифт -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap" rel="stylesheet">
 
 </head>
 <body>
-    <!-- Хедер -->
-    <header class="mainHeader">
-        <div class="mainHeader__container">
+	<!-- Хедер -->
+	<header class="mainHeader">
+		<div class="mainHeader__container">
 			<nav class="mainHeader__nav ">
-                <!-- Лого -->
-                <a class="mainHeader__logo" asp-controller="Home" asp-action="Index">
-                    <img src="~/img/comp-fix-logo.svg" class="mainHeader__logo-img"> 
-                </a>
-                <!-- Кнопки -->
+				<!-- Лого -->
+				<a class="mainHeader__logo" asp-controller="Home" asp-action="Index">
+					<img src="~/img/comp-fix-logo.svg" class="mainHeader__logo-img" alt="Лого">
+				</a>
+				<!-- Кнопки -->
 				<ul class="mainHeader__list">
 					<li>
-						<a class="mainHeader__list-link">
-                            <img class="mainHeader__list-link-img" src="~/img/header/favorite-heart.svg">
-                        </a>
-                    </li>
-                    <li>
-                        <a class="mainHeader__list-link">
-                            <img class="mainHeader__list-link-img" src="~/img/header/shopping-cart.svg">
-                        </a>
-                    </li>
+						<a class="mainHeader__list-link" title="Улюблене">
+							<img class="mainHeader__list-link-img" src="~/img/header/favorite-heart.svg" alt="Улюблене">
+						</a>
+					</li>
 					<li>
-                        <a class="mainHeader__list-link">
-							<img class="mainHeader__list-link-img" src="~/img/header/account-circle.svg">
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-    </header>
+						<a class="mainHeader__list-link" title="Кошик">
+							<img class="mainHeader__list-link-img" src="~/img/header/shopping-cart.svg" alt="Кошик">
+						</a>
+					</li>
+					<li>
+						<a class="mainHeader__list-link" title="Профіль" id="accountDrawerBtn">
+							<img class="mainHeader__list-link-img" src="~/img/header/account-circle.svg" alt="Профіль">
+						</a>
+					</li>
+				</ul>
+			</nav>
+		</div>
+	</header>
 
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
+	<div class="container">
+		<main role="main" class="pb-3">
+			@RenderBody()
+		</main>
+	</div>
 
-    <!-- Футер -->
-    <footer class="mainFooter">
-        <div class=" mainFooter__container">
-            <div class="mainFooter__row">
-                <!-- Інформація про компанію -->
-                <div class="mainFooter__col">
-                    <span class="mainFooter__brand">CompFix</span>
-                    <p class="mainFooter__text">Усе необхідне для апгрейду та створення ідеального комп'ютера. Тільки перевірені бренди, новітні комплектуючі та готові рішення для роботи і геймінгу.</p>
-                </div>
-                <!-- Контакти -->
-                <div class="mainFooter__contacts">
-                    <span class="mainFooter__contact">Контакти</span>
-                    <p class="mainFooter__text">Тел: @company.Phone  |  Email: @company.Email</p>
-                </div>
-                <!-- Посилання -->
-                <div class="mainFooter__links">
-                    <a asp-area="" asp-controller="Home" asp-action="Privacy" class="mainFooter__link">Політика конфіденційності</a>
-                </div>
-            </div>
+	<!-- Футер -->
+	<footer class="mainFooter">
+		<div class=" mainFooter__container">
+			<div class="mainFooter__row">
+				<!-- Інформація про компанію -->
+				<div class="mainFooter__col">
+					<span class="mainFooter__brand">CompFix</span>
+					<p class="mainFooter__text">Усе необхідне для апгрейду та створення ідеального комп'ютера. Тільки перевірені бренди, новітні комплектуючі та готові рішення для роботи і геймінгу.</p>
+				</div>
+				<!-- Контакти -->
+				<div class="mainFooter__contacts">
+					<span class="mainFooter__contact">Контакти</span>
+					<p class="mainFooter__text">Тел: @company.Phone  |  Email: @company.Email</p>
+				</div>
+				<!-- Посилання -->
+				<div class="mainFooter__links">
+					<a asp-area="" asp-controller="Home" asp-action="Privacy" class="mainFooter__link">Політика конфіденційності</a>
+				</div>
+			</div>
 
-            <!-- Нижня смужка -->
-            <div class="mainFooter__bottom">
-                &copy; 2026 - CompFix. Усі права захищені.
-            </div>
-        </div>
-    </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
+			<!-- Нижня смужка -->
+			<div class="mainFooter__bottom">
+				&copy; 2026 - CompFix. Усі права захищені.
+			</div>
+		</div>
+	</footer>
+
+	<!-- Виїздна панель(Drawer) -->
+	<!-- Затемнення фону при відкритій панелі -->
+	<div id="drawerOverlay" class="drawer-overlay"></div>
+
+	<aside id="accountDrawer" class="account-drawer" aria-hidden="true">
+		<!-- Drawer header -->
+		<div class="account-drawer__header">
+			<button id="closeDrawerBtn" class="account-drawer__close-btn" aria-label="Закрити">&times;</button>
+			<a class="account-drawer__logo" asp-controller="Home" asp-action="Index">
+				<img src="~/img/comp-fix-logo.svg" class="account-drawer__logo-img" alt="Лого">
+			</a>
+		</div>
+		<div class="account-drawer__content">
+			@if (User.Identity != null && User.Identity.IsAuthenticated) {
+				<!-- Якщо авторизований -->
+				@if (User.IsInRole("admin")) {
+					<!-- Якщо адмін -->
+					<div class="account-drawer__admin-container">
+						<div>
+							<img class="account-drawer__account-img" src="~/img/header/account-circle.svg">
+						</div>
+						<div class="account-drawer__admin-info">
+							<span class="account-drawer__name">Адміністратор</span>
+							<span class="account-drawer__email">admin@compfix.ua</span>
+						</div>
+					</div>
+					<ul class="account-drawer__action-list">
+						<li>
+							<form asp-controller="Account" asp-action="AdminLogout" method="post">
+								<button type="submit" class="account-drawer__btn">Вийти з профілю</button>
+							</form>
+						</li>
+					</ul>
+				}
+				else {
+					<!-- Якщо не адмін -->
+					<div class="account-drawer__user-container">
+						<div>
+							<img class="account-drawer__account-img" src="~/img/header/account-circle.svg">
+						</div>
+						<div class="account-drawer__user-info">
+							<span class="account-drawer__name">@User.Identity.Name</span>
+							<span class="account-drawer__email"></span>
+						</div>
+					</div>
+					<ul class="account-drawer__action-list">
+						<form asp-controller="" asp-action="" method="post">
+							<button type="submit" class="account-drawer__btn">Вийти з профілю</button>
+						</form>
+					</ul>
+				}
+			}
+			else {
+				<!-- Якщо не авторизований -->
+				<ul class="account-drawer__action-list">
+					<li>
+						<a asp-controller="" asp-action="" class="account-drawer__btn">Увійти</a>
+					</li>
+					<li>
+						<a asp-controller="" asp-action="" class="account-drawer__btn">Зареєструватися</a>
+					</li>
+				</ul>
+			}
+		</div>
+	</aside>
+
+	<script src="~/lib/jquery/dist/jquery.min.js"></script>
+	<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="~/js/site.js" asp-append-version="true"></script>
+	@await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
