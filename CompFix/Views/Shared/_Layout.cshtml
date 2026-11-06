@@ -113,7 +113,7 @@
 					</div>
 					<ul class="account-drawer__action-list">
 						<li>
-							<form asp-controller="Account" asp-action="AdminLogout" method="post">
+							<form asp-controller="Account" asp-action="Logout" method="post">
 								<button type="submit" class="account-drawer__btn">Вийти з профілю</button>
 							</form>
 						</li>
@@ -126,8 +126,8 @@
 							<img class="account-drawer__account-img" src="~/img/header/account-circle.svg">
 						</div>
 						<div class="account-drawer__user-info">
-							<span class="account-drawer__name">@User.Identity.Name</span>
-							<span class="account-drawer__email"></span>
+							<span class="account-drawer__name"></span>
+							<span class="account-drawer__email">@User.Identity.Name</span>
 						</div>
 					</div>
 					<ul class="account-drawer__action-list">

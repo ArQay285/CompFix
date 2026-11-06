@@ -14,19 +14,20 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // 2. Підключення Identity з підтримкою ролей
-builder.Services.AddDefaultIdentity<IdentityUser>(options => {
+builder.Services.AddDefaultIdentity<ApplicationUser>(options => {
     options.SignIn.RequireConfirmedAccount = false;
     options.Password.RequireUppercase = false;
 })
-.AddRoles<IdentityRole>() // Додаємо підтримку ролей ("admin")
-.AddEntityFrameworkStores<AppDbContext>();
+.AddRoles<IdentityRole>() // Додає підтримку ролей ("admin")
+.AddEntityFrameworkStores<AppDbContext>()
+.AddErrorDescriber<CustomIdentityErrorDescriber>(); // Підключає українські повідомлення
 
 builder.Services.ConfigureApplicationCookie(options => {
     options.LoginPath = "/login"; // Шлях для звичайного входу
     options.AccessDeniedPath = "/login"; // Куди перенаправляти, якщо немає прав
 });
 
-// Зв'язуємо секцію "CompanyInfo" з класом "CompanySettings"
+// Зв'язує секцію "CompanyInfo" з класом "CompanySettings"
 builder.Services.Configure<CompanyInfo>(builder.Configuration.GetSection("CompanyInfo"));
 
 builder.Services.AddScoped(typeof(ControlBaseDate<>));
@@ -35,7 +36,7 @@ var app = builder.Build();
 // Створює роль admin
 using (var scope = app.Services.CreateScope()) { // Створює область для отримання сервісів
     var services = scope.ServiceProvider;
-    var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
+    var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
     var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
 
     // Створює роль Admin, якщо її не існує
@@ -49,7 +50,7 @@ using (var scope = app.Services.CreateScope()) { // Створює област�
     var adminUser = await userManager.FindByNameAsync(adminName);
 
     if (adminUser == null) {
-        var newAdmin = new IdentityUser {
+        var newAdmin = new ApplicationUser {
             UserName = adminName,
             Email = adminEmail,
             EmailConfirmed = true

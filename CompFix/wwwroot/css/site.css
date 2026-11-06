@@ -304,7 +304,7 @@ input[type="checkbox"] {
 
 .account-drawer__name {
     font-weight: 600;
-    font-size: 18px;
+    font-size: 16px;
     color: var(--primary-purple);
 }
 
@@ -370,9 +370,7 @@ input[type="checkbox"] {
 .login__validation-summary:not(:empty) {
     color: var(--validation-red);
     /*border: 1px solid #f5c6cb;*/
-    padding: 10px 10px 0 10px;
     border-radius: 8px;
-    margin-bottom: 12px;
     font-size: 13px;
 }
 .login__form-title {
