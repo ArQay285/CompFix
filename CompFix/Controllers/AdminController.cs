@@ -13,9 +13,11 @@ namespace CompFix.Controllers
     {
 
         private readonly ControlBaseDate<Product> _productRepo;
-        public AdminController(ControlBaseDate<Product> productRepo)
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        public AdminController(ControlBaseDate<Product> productRepo, IWebHostEnvironment webHostEnvironment)
         {
             _productRepo = productRepo;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         [Route("")] // Відповідає адресі /admin
@@ -54,10 +56,37 @@ namespace CompFix.Controllers
             return View();
         }
         [HttpPost("addproduct")]
-        public async Task<IActionResult> AddProduct(Product product)
+        [ValidateAntiForgeryToken]
+        [RequestSizeLimit(5 * 1024 * 1024)]
+        public async Task<IActionResult> AddProduct(Product product, IFormFile image)
         {
+            ModelState.Remove(nameof(product.ImageUrl));
             if (ModelState.IsValid)
             {
+                if (image != null && image.Length > 0)
+                {
+                    // 2. Список дозволених розширень для безпеки
+                    var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".webp" };
+                    string fileExtension = Path.GetExtension(image.FileName).ToLowerInvariant();
+                    if (!allowedExtensions.Contains(fileExtension))
+                    {
+                        ModelState.AddModelError("Image", "Неприпустимий формат зображення. Дозволені формати: .jpg, .jpeg, .png, .webp");
+                        return View(product);
+                    }
+                    string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images", "products");
+                    if (!Directory.Exists(uploadsFolder))
+                    {
+                        Directory.CreateDirectory(uploadsFolder);
+                    }
+                    // 3. Генеруємо унікальне ім'я файлу (Guid + оригінальна назва)
+                    string uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(image.FileName);
+                    string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                    using (var filestream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await image.CopyToAsync(filestream);
+                    }
+                    product.ImageUrl = "/images/products/" + uniqueFileName;
+                }
                 await _productRepo.AddAsync(product);
                 return RedirectToAction(nameof(AllProducts));
             }
@@ -65,6 +94,7 @@ namespace CompFix.Controllers
             return View(product);
 
         }
+
 
         [HttpGet("editproduct/{id}")]
         public async Task<IActionResult> EditProduct(int id)
@@ -75,15 +105,64 @@ namespace CompFix.Controllers
             return View(product);
         }
         [HttpPost("editproduct/{id}")]
-        public async Task<IActionResult> EditProduct(Product product)
+        [ValidateAntiForgeryToken]
+        [RequestSizeLimit(5 * 1024 * 1024)]
+        public async Task<IActionResult> EditProduct(int id, Product product, IFormFile? image)
         {
+            if (id != product.Id) return NotFound("Товар не знайдено");
+            var existingProduct = await _productRepo.GetByIdAsync(id);
+            if (existingProduct == null) return NotFound("Товар не знайдено");
+            ModelState.Remove(nameof(product.ImageUrl));
             if (ModelState.IsValid)
             {
-                await _productRepo.UpdateAsync(product);
+                if (image != null && image.Length > 0)
+                {
+
+                    var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".webp" };
+                    string fileExtension = Path.GetExtension(image.FileName).ToLowerInvariant();
+                    if (!allowedExtensions.Contains(fileExtension))
+                    {
+                        ModelState.AddModelError("Image", "Неприпустимий формат зображення. Дозволені формати: .jpg, .jpeg, .png, .webp");
+                        return View(product);
+                    }
+                    string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images", "products");
+                    if (!Directory.Exists(uploadsFolder))
+                    {
+                        Directory.CreateDirectory(uploadsFolder);
+                    }
+                    if (!string.IsNullOrEmpty(existingProduct.ImageUrl))
+                    {
+                        string existingFilePath = Path.Combine(_webHostEnvironment.WebRootPath, existingProduct.ImageUrl.TrimStart('/').Replace('/', Path.DirectorySeparatorChar));
+                        if (System.IO.File.Exists(existingFilePath))
+                        {
+                            System.IO.File.Delete(existingFilePath);
+                        }
+                    }
+
+                    string uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(image.FileName);
+                    string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await image.CopyToAsync(fileStream);
+                    }
+
+
+                    existingProduct.ImageUrl = "/images/products/" + uniqueFileName;
+                }
+                existingProduct.Name = product.Name;
+                existingProduct.Description = product.Description;
+                existingProduct.Price = product.Price;
+                existingProduct.Quantity = product.Quantity;
+                existingProduct.Condition = product.Condition;
+                existingProduct.Discount = product.Discount;
+                existingProduct.IsAvailable = product.IsAvailable;
+                await _productRepo.UpdateAsync(existingProduct);
                 return RedirectToAction(nameof(AllProducts));
             }
             return View(product);
         }
+
 
         [HttpPost]
         public async Task<IActionResult> Delete(int id)

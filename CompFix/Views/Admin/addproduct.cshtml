@@ -8,7 +8,7 @@
 	<div class="product-form__title-wrapper">
 		<h1 class="product-form__title">Додавання нового товару 🖥️</h1>
 	</div>
-	<form asp-controller="Admin" asp-action="AddProduct" method="post" class="product-form">
+	<form asp-controller="Admin" asp-action="AddProduct" method="post" enctype="multipart/form-data" class="product-form">
 		<div asp-validation-summary="ModelOnly" class="product-form__validation "> </div>
 		<!-- Назва товару -->
 		<div class="name-product">
@@ -54,7 +54,7 @@
 		</div>
 		<!-- Перемикач наявності та Блок завантаження фото -->
 		<div class="product-form__row align-items-start">
-			<div class="product-form__col"></div>
+
 			<div class="product-form__col">
 				<div class="name-product">
 					<label class="product-form__label">Наявність</label>
@@ -63,19 +63,51 @@
 						<span class="product-form__toggle-slider"></span>
 						<span class="product-form__toggle-text">Доступно для замовлення</span>
 					</label>
-
 				</div>
-				<!-- TODO:Доробити логіку з додваванням картінки -->
-
 			</div>
+			<div class="product-form__col">
+				<div class="name-product">
+					<label for="image" class="product-form__label">Фото товару</label>
+					<input type="file" name="image" id="image" class="form-control" accept=".jpg,.jpeg,.png" onchange="previewImage(event)" />
+					<div class="imagen" id="imagePreviewContainer">
+						<img class="imagen-inside" id="imagePreview" src="#" alt="Недоступно фото">
+					</div>
+					@if (ViewData.ModelState["Image"] != null)
+					{
+						<span class="product-form__error">@ViewData["ImageUploadError"]</span>
+					}
+				</div>
+			</div>
+
 		</div>
 		<!-- Кнопки дій -->
 		<div class="product-form__actions">
 			<a asp-action="AllProducts" class="product-form__btn product-form__btn--cancel">Скасувати</a>
 			<button type="submit" class="product-form__btn product-form__btn--submit">Додати товар</button>
 		</div>
+
 	</form>
 </div>
+
+
+<script>
+	function previewImage(event) {
+		var reader = new FileReader();
+		var imagePreview = document.getElementById('imagePreview');
+		var previewContainer = document.getElementById('imagePreviewContainer');
+
+		reader.onload = function () {
+			imagePreview.src = reader.result;
+			previewContainer.style.display = 'block'; // Показуємо контейнер з картинкою
+		}
+
+		if (event.target.files[0]) {
+			reader.readAsDataURL(event.target.files[0]);
+		} else {
+			previewContainer.style.display = 'none';
+		}
+	}
+</script>
 
 @section Scripts {
 	<partial name="_ValidationScriptsPartial" />

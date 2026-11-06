@@ -33,6 +33,7 @@ namespace CompFix.Models
         public decimal DiscountedPrice => Price * (1 - (decimal)Discount / 100);
         //Прапорець видимості(true = показувати покупцям, false = приховано)
         public bool IsAvailable { get; set; } = true;
+        public string ImageUrl { get; set; } = string.Empty;
 
     }
 }
