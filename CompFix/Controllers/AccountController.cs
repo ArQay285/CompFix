@@ -1,4 +1,4 @@
-﻿using CompFix.Models;
+﻿using CompFix.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,7 +23,7 @@ namespace CompFix.Controllers
             return View();
         }
 
-        // Обробка POST-запиту для входу адміністратор
+        // Обробка POST-запиту для входу адміністратора
         [HttpPost("admin/login")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AdminLogin(AdminLoginViewModel model, string? returnUrl = null)
@@ -34,7 +34,7 @@ namespace CompFix.Controllers
                 return View(model);
             }
 
-            // Шукаємо користувача за логіном
+            // Шукаємо адміна за логіном
             var user = await _userManager.FindByNameAsync(model.UserName);
 
             if (user != null) {
@@ -63,7 +63,7 @@ namespace CompFix.Controllers
             return View(model);
         }
 
-        // Вихід користувача з системи
+        // Вихід адміна з системи
         [HttpPost("admin/logout")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AdminLogout()

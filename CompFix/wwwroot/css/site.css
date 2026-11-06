@@ -357,12 +357,14 @@ input[type="checkbox"] {
 
 /* Admin Login */
 .login__container {
-    margin-block: 50px 14px;
+    margin-top: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .login__form {
     max-width: 400px;
-    margin-left: 12px;
 }
 
 .login__validation-summary:not(:empty) {
@@ -372,6 +374,11 @@ input[type="checkbox"] {
     border-radius: 8px;
     margin-bottom: 12px;
     font-size: 13px;
+}
+.login__form-title {
+    margin-bottom: 12px;
+    padding-bottom: 1px;
+    border-bottom: 2px solid rgba(108, 92, 231, 0.3);
 }
 
 .login__validation-for {
@@ -383,7 +390,7 @@ input[type="checkbox"] {
 .login__form-group {
     display: flex;
     flex-direction: column;
-    margin: 0 0 12px 10px;
+    margin-bottom: 12px;
 }
 
 .login__form-label {

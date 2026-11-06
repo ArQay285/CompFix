@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace CompFix.Models
+namespace CompFix.ViewModels
 {
     public class AdminLoginViewModel
     {

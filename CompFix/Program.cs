@@ -22,7 +22,8 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => {
 .AddEntityFrameworkStores<AppDbContext>();
 
 builder.Services.ConfigureApplicationCookie(options => {
-    options.LoginPath = "/admin/login"; // Якщо неавторизований іде в /admin, його кидає сюди
+    options.LoginPath = "/login"; // Шлях для звичайного входу
+    options.AccessDeniedPath = "/login"; // Куди перенаправляти, якщо немає прав
 });
 
 // Зв'язуємо секцію "CompanyInfo" з класом "CompanySettings"
@@ -46,7 +47,7 @@ using (var scope = app.Services.CreateScope()) { // Створює област�
     string adminEmail = "admin@compfix.ua";
     string adminName = "admin"; // Унікальне ім'я для входу
     var adminUser = await userManager.FindByNameAsync(adminName);
-    
+
     if (adminUser == null) {
         var newAdmin = new IdentityUser {
             UserName = adminName,
