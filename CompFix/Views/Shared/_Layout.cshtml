@@ -30,6 +30,11 @@
 				<a class="mainHeader__logo" asp-controller="Home" asp-action="Index">
 					<img src="~/img/comp-fix-logo.svg" class="mainHeader__logo-img" alt="Лого">
 				</a>
+
+				<!-- 2. Пошуковий рядок (рендериться ТІЛЬКИ якщо сторінка його оголосила) -->
+                <div class="flex-grow-1 d-flex align-items-stretch py-1">
+            @RenderSection("HeaderSearch", required: false)
+				</div>
 				<!-- Кнопки -->
 				<ul class="mainHeader__list">
 					<li>

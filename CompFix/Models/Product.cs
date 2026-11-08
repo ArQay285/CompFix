@@ -34,6 +34,7 @@ namespace CompFix.Models
         //Прапорець видимості(true = показувати покупцям, false = приховано)
         public bool IsAvailable { get; set; } = true;
         public string ImageUrl { get; set; } = string.Empty;
+        [Required(ErrorMessage ="Обовязково має бути вид товару")]
         public int? CategoryId { get; set; }
         public Category? Category { get; set; }
 

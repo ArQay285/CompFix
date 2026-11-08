@@ -1,22 +1,103 @@
-﻿using CompFix.ViewModels;
-using CompFix.Models;
+﻿using CompFix.Models;
+using CompFix.Services;
+using CompFix.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+
 
 namespace CompFix.Controllers
 {
     public class AccountController : Controller
     {
+        private readonly ControlBaseDate<Product> _productRepo;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public AccountController(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager)
+        public AccountController(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager,ControlBaseDate<Product> product)
         {
             _signInManager = signInManager;
             _userManager = userManager;
+            _productRepo = product;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> UserInterface([FromServices] ControlBaseDate<Category> categories,
+            string? search,
+            int? categoryId,
+            int? condition,
+            bool? IsAvaivle,
+            bool? HasDiscount,
+            string? stockStatus,
+            decimal? MinPrice,
+            decimal? MaxPrice,
+            string? SortBy){
+            
+                var allproduct = _productRepo.GetQueryable().Include(p => p.Category).Where(p => p.IsAvailable && p.Quantity > 0).AsQueryable();
+                // 2. Текстовий пошук за назвою товару
+                if (!string.IsNullOrWhiteSpace(search))
+                {
+                    allproduct = allproduct.Where(p => p.Name.Contains(search));
+                }
+                if (categoryId.HasValue && categoryId.Value > 0)
+                {
+                    allproduct = allproduct.Where(p => p.CategoryId == categoryId.Value);
+                }
+                if (HasDiscount == true)
+                {
+                    allproduct = allproduct.Where(p => p.Discount > 0);
+                }
+                if (stockStatus == "low")
+                {
+                    allproduct = allproduct.Where(p => p.Quantity > 0 && p.Quantity <= 3);
+                }
+                else if (stockStatus == "out")
+                {
+                    allproduct = allproduct.Where(p => p.Quantity == 0);
+                }
+                if (IsAvaivle == true)
+                {
+                    allproduct = allproduct.Where(p => p.IsAvailable && p.Quantity > 0);
+                }
+                if (condition.HasValue && condition.Value > 0)
+                {
+                    allproduct = allproduct.Where(p => p.Condition == (ItemCondition)condition);
+                }
+                if (MinPrice.HasValue)
+                {
+                    allproduct = allproduct.Where(p => p.Price >= MinPrice);
+                }
+                if (MaxPrice.HasValue)
+                {
+                    allproduct = allproduct.Where(p => p.Price <= MaxPrice.Value);
+                }
+                allproduct = SortBy switch
+                {
+                    "price_increase" => allproduct.OrderBy(p => p.Price),
+                    "price_reduc" => allproduct.OrderByDescending(p => p.Price),
+                    "date_old" => allproduct.OrderBy(p => p.CreatedAt),
+                    _ => allproduct.OrderByDescending(p => p.CreatedAt)
+                };
+                var catageries = await categories.GetAllAsync();
+                ViewBag.Categories = new SelectList(catageries, "id", "Name", categoryId);
+                ViewBag.CurrentSearch = search;
+                ViewBag.CurrentSort = SortBy;
+                ViewBag.CurrentCondition = condition;
+                ViewBag.MinPrice = MinPrice;
+                ViewBag.MaxPrice = MaxPrice;
+                ViewBag.HasDiscount = HasDiscount;
+                ViewBag.IsAvailable = IsAvaivle;
+                ViewBag.StockStatus = stockStatus;
+                var listproduct = await allproduct.ToListAsync();
+                return View(listproduct);
         }
 
 
+
+
+           
+      
         // Адміни
         [HttpGet("admin/login")]
         public async Task<IActionResult> AdminLogin(string? returnUrl = null)

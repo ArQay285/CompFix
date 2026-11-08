@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
-using CompFix;
+using CompFix.Models;
 namespace CompFix.Services
+
 // клас для керування базою даних реалізація CRUD
 {
     public class ControlBaseDate<T> where T : class
@@ -43,6 +44,10 @@ namespace CompFix.Services
         {
             db.Set<T>().Update(item);
             await db.SaveChangesAsync();
+        }
+        public IQueryable<T> GetQueryable()
+        {
+            return db.Set<T>().AsQueryable();
         }
 
     }

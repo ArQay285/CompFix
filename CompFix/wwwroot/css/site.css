@@ -7,7 +7,10 @@
     --text-grey: #636e72;
     --accent-teal: #00CEC9;
     --validation-red: #d9534f;
-    --light-purple: #A29BFE
+    --light-purple: #A29BFE;
+    --light-grey: #f8f9fa;
+    --dark-grey: #212529
+   
 }
 
 html {
@@ -616,4 +619,434 @@ input[type="checkbox"] {
 .imagen {
    margin-top: 10px;
    border: 5px solid var(--light-purple);
+}
+/* Перекриваємо дефолтні стилі Bootstrap container тільки для каталогу */
+.container:has(.catalog-container),
+main:has(.catalog-container) {
+    max-width: 100% !important;
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+    margin-left: 0px !important;
+    margin-right: 0px !important;
+}
+.catalog-container {
+    padding: 28px;
+    background-color: var(--light-grey);
+    min-height: 800px;
+    margin-top: 20px;
+}
+.catalog-header {
+    border: 1.5px solid #6f42c1;
+    border-radius: 40px;
+    padding: 12px 24px;
+    margin-bottom: 24px;
+    background-color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: fit-content;
+}
+    .catalog-header h2 {
+        font-size: 28px;
+        font-weight: 700;
+        color: var(--primary-purple);
+        margin:0
+    }
+.catalog-layout{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:24px;
+    width: 100%;
+}
+@media(min-width: 992px){
+    .catalog-layout {
+        grid-template-columns: 1fr 280px;
+        align-items: start;
+    }
+
+    .catalog-sidebar {
+        position: -webkit-sticky !important;
+        position: sticky !important;
+        top: 20px !important; 
+        align-self: start !important;
+        max-height: calc(100vh - 40px); /* Якщо екран маленький — з'явиться внутрішній скрол */
+        overflow-y: auto;
+    }   
+}
+.catalog-container,
+main:has(.catalog-container),
+body {
+    overflow: visible !important;
+}
+
+.catalog-main {
+   
+    width: 100%;
+    
+}
+.catalog-empty-state {
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 12px;
+    text-align: center;
+    border: 1px solid #e2e8f0;
+}
+    .catalog-empty-state p {
+        margin: 0;
+        color: var(--text-grey);
+        font-size: 15px;
+    }
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+    
+    gap: 16px
+}
+
+.compfix-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 14px;
+    background-color: #ffffff;
+    border: 1px solid #e9e9e9;
+    border-radius: 12px;
+    box-sizing: border-box;
+    transition: transform 0.2s ease, box-shadow 0.2s ease
+    
+}
+    .compfix-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(108, 92, 231, 0.12);    
+    }
+.compfix-card__img-box {
+    height: 140px;
+    width: 100%;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    margin-bottom: 10px;
+    overflow: hidden;
+    border-radius: 8px; 
+
+}
+    .compfix-card__img-box img{
+        max-height:100%;
+        max-width:100%;
+        object-fit: contain;
+        
+    }
+    /*відризайця фото  якщо виходить за рамки*/
+    .compfix-card__img {
+        max-height: 100%;
+        max-width: 100%;
+        object-fit: contain /* підганяє картинку без втрати інформації(розмірів і не обрізає)*/
+    }
+.compfix-card__no-img {
+    width: 100% !important;
+    height: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background-color: #f1f2f6;
+    color: var(--text-grey);
+    font-size: 12px;
+    border-radius: 8px;
+    box-sizing: border-box;
+}
+.compfix-card__body{
+    display:flex;
+    flex:1px;   
+    flex-direction: column;
+    padding-top: 8px;
+
+}
+.compfix-card__title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 4px;
+    white-space: nowrap;/*забороняє пренеосити рядок*/
+    overflow: hidden;
+    text-overflow: ellipsis/*додає стиль обрізаному тексту зараз це ...*/
+}
+.compfix-card__badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 500;
+    background-color: rgba(108, 92, 231, 0.1);
+    color: var(--primary-purple);
+    padding: 2px 8px;
+    border-radius: 6px;
+    margin-bottom:8px;
+    width:fit-content
+}
+.compfix-card__price-row {
+    min-height: 48px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    margin-bottom: 8px;
+}
+.compfix-card__old-price {
+    font-size: 12px;
+    color: var(--text-grey);
+    text-decoration: line-through;
+    margin-right: 4px;
+}
+.compfix-card__discount-tag {
+    font-size: 10px;
+    background-color: #ff7675;
+    color: #ffffff;
+    padding: 1px, 4px;
+    border-radius: 4px;
+    font-weight: 600;
+}
+.compfix-card__main-price {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-dark);
+
+}
+.text-purple {
+    color: var(--primary-purple) !important;
+}
+.compfix-card__info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    color: var(--text-grey);
+    border-top: 1px dashed #e2e8f0;
+    padding-top:8px;
+    margin-bottom:12px
+}
+.compfix-card__info strong{
+    color: var(--text-dark);
+    font-weight:600;
+
+}
+.compfix-card__conditionfont {
+    font-weight: 600;
+    color: var(--text-dark);
+    background-color: #f1f2f6;
+    padding: 2px 6px;
+    border-radius:4px;
+}
+.compfix-card__buttons {
+    display: flex;
+    gap: 6px;
+    width:100%;
+    margin-top: auto;
+
+}
+    .compfix-card__buttons form {
+        flex: 1;
+        min-width: 0;
+        margin: 0;
+    }
+.compfix-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    min-width: 0; 
+    padding: 6px 4px; 
+    font-size: 12px;
+    font-weight: 600;
+    border-radius: 6px;
+    border: 1px solid transparent;
+    text-decoration: none;
+    cursor: pointer;
+    box-sizing: border-box;
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+.w-100 {
+    width: 100%;
+}
+.compfix-btn--edit {
+    background-color: #f0f2fe;
+    color: #4f46e5;
+    border-color: #e0e7ff;
+}
+.compfix-btn--edit:hover {
+    background-color: #4f46e5;
+    color: #ffffff;
+    border-color: #4f46e5;
+}
+.compfix-btn--delete {
+    background-color: #fef2f2;
+    color: #dc2626;
+    border-color: #fee2e2;
+}
+
+    .compfix-btn--delete:hover {
+        background-color: #dc2626;
+        color: #ffffff;
+        border-color: #dc2626;
+    }
+.catalog-sidebar {
+    width: 100%;
+    
+}
+.filter-panel {
+    background-color: #ffffff;
+    border: 1px solid #e9e9e9;
+    border-radius: 12px;
+    padding: 16px;
+    box-sizing: border-box;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+}
+.filter-panel__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #f0f0f0; 
+    margin-bottom: 16px;
+}
+.filter-panel__header h5 {
+    margin: 0;
+    font-size: 16px;    
+    font-weight: 700;
+    color: var(--secondary-purple)
+}
+.filter-panel__icon {
+    font-size: 16px;
+    line-height: 1;
+}
+.filter-panel__form{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+}
+.filter-field {
+    width: 100%;
+    position: relative;
+    
+}
+  
+    .filter-field:has(input[name="search"])::before {
+        content: "🔍";
+        position: absolute;
+        left: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 13px;
+        pointer-events: none;
+        z-index: 2;
+    }
+
+    .filter-field .form-control {
+        width: 100%;
+        padding: 10px 14px 10px 35px; 
+        font-size: 14px;
+        border: 1.5px solid #dcdde1;
+        border-radius: 8px;
+        background-color: #ffffff;
+        color: var(--text-dark);
+        box-sizing: border-box; /* Ховає внутрішні відступи всередину загальної ширини інпуту */
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+.filter-field .form-control:focus {
+outline: none;
+border-color: var(--primary-purple); 
+box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.15); 
+}
+.filter-label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 6px;
+}
+.filter-field.form-select {
+    width: 100%;
+    padding: 10px 14px;
+    font-size: 14px;
+    font-family: 'Lexend', sans-serif;
+    border: 1.5px solid #dcdde1;
+    border-radius: 8px;
+    background-color: #ffffff;
+    color: var(--text-dark);
+    box-sizing: border-box;
+    cursor: pointer;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+    
+.filter-field .form-select:focus {
+outline: none;
+border-color: var(--primary-purple);
+box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.15);
+    }
+.compfix-card__old-price-box {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 2px;
+}
+.filter-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap:5px;
+}
+.compfix-btn--submit {
+    background-color: #6c5ce7;
+    color: #ffffff;
+    border: none;
+    flex:1;
+    border-radius: 8px;
+    padding: 9px 16px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+.compfix-btn--submit:hover {
+    background-color: #5b4cc4;
+    color: #ffffff;
+}
+.compfix-btn--submit:active{
+    transform: scale(0.98)
+}
+.filter-reset-link {
+    display: block;
+    text-align: center;
+    background-color: #f1f2f6;
+    color: #636e72;
+    flex:1;
+    text-decoration: none;
+    border-radius: 8px;
+    padding: 9px 16px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.filter-reset-link:hover {
+background-color: #dfe4ea;
+color: #2d3436;
+}
+
+.compfix-status-badge {
+    display: inline-flex;
+    align-items: center;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 6px;
+    border: 1px solid transparent;
+    line-height: 1;
+}
+.compfix-status-badge--available {
+    background-color: #e6f4ea;
+    color: #1e7e34;
+    border-color: #b7e1cd;
+}
+.compfix-status-badge--unavailable {
+    background-color: #fce8e6;
+    color: #d93025;
+    border-color: #f9c2c0;
 }

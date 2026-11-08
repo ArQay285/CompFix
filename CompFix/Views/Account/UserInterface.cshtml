@@ -1,0 +1,190 @@
+﻿@model IEnumerable<CompFix.Models.Product>
+
+@section HeaderSearch {
+    <form id="globalSearchForm" asp-controller="Account" asp-action="UserInterface" method="get" class="w-100 h-100 d-flex align-items-center py-1">
+        <div class="input-group bg-dark rounded-3 overflow-hidden border-0 shadow-sm w-100">
+            <input type="text" name="search" value="@ViewBag.CurrentSearch" class="form-control bg-dark text-light border-0 placeholder-light px-3 py-2" placeholder="Я шукаю..." />
+            <button type="submit" class="btn btn-dark border-0 px-4 d-flex align-items-center gap-2">
+                🔍 <span>Знайти</span>
+            </button>
+        </div>
+    </form>
+}
+
+<div class="catalog-container py-4">
+    
+    <div class="catalog-top-bar mb-3">
+        <nav class="catalog-breadcrumbs mb-1 text-muted small">
+            <a asp-controller="Account" asp-action="UserInterface" class="text-decoration-none text-secondary">Усі товари</a> 
+            <span class="mx-1">›</span> 
+            <span class="text-dark fw-semibold">Каталог товарів</span>
+        </nav>
+        <h2 class="fw-bold">Каталог товарів 📦</h2>
+    </div>
+
+    <div class="catalog-layout">
+        <!-- 1. ЗОНА ТОВАРІВ -->
+        <div class="catalog-main">
+            @if (!Model.Any())
+            {
+                <div class="catalog-empty-state">
+                    <p>Наразі немає товару, що відповідає обраним фільтрам</p>
+                </div>
+            }
+            else
+            {
+                <div class="products-grid">
+                    @foreach (var product in Model)
+                    {
+                        <div class="compfix-card">
+                            <div class="compfix-card__img-box">
+                                @if (!string.IsNullOrEmpty(product.ImageUrl))
+                                {
+                                    <img src="@product.ImageUrl" alt="@product.Name" class="compfix-card__img" />
+                                }
+                                else
+                                {
+                                    <div class="compfix-card__no-img">Без фото</div>
+                                }
+                            </div>
+                            
+                            <!-- Тіло картки (огортає весь вміст) -->
+                            <div class="compfix-card__body">
+                                <h6 class="compfix-card__title" title="@product.Name">@product.Name</h6>
+                                
+                                <!-- Блок з цінами -->  
+                                <div class="compfix-card__info">
+                                    <span class="compfix-card__badge mb-0">@(product.Category?.Name ?? "Без категорії")</span>
+                                    <span class="compfix-card__conditionfont">
+                                        @(product.Condition == CompFix.Models.ItemCondition.New ? "Новий" :
+                                          product.Condition == CompFix.Models.ItemCondition.Used ? "Б/У" : "Відновлений")
+                                    </span>
+                                </div>
+                                <div class="compfix-card__price-row">
+                                    @if(product.Discount > 0)
+                                    {   
+                                        <div class="compfix-card__old-price-box">
+                                            <span class="compfix-card__old-price">@product.Price.ToString("N0") ₴</span>
+                                            <span class="compfix-card__discount-tag">-@product.Discount%</span>
+                                        </div>
+                                        <div class="compfix-card__main-price text-purple">@product.DiscountedPrice.ToString("N0") ₴</div>
+                                    }
+                                    else
+                                    {
+                                        <div class="compfix-card__main-price">@product.Price.ToString("N0") ₴</div>
+                                    }
+                                </div>
+
+                                
+                                
+
+                                <!-- Кнопка детальніше -->
+                                <div class="compfix-card__buttons">
+                                    <a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id" class="compfix-btn compfix-btn--submit w-100">
+                                        Детальніше
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+
+        <!-- 2. ЗОНА ФІЛЬТРІВ -->
+        <div class="catalog-sidebar">
+            <div class="filter-panel">
+                <div class="filter-panel__header">
+                    <h5>Фільтри</h5>
+                    <span class="filter-panel__icon">⚡</span>
+                </div>
+                <form asp-action="UserInterface" method="get" class="filter-panel__form">
+                    
+                    <input type="hidden" name="search" value="@ViewBag.CurrentSearch" />
+                    
+                    <!-- Вибір категорії -->
+                    <div class="filter-field">
+                        <label class="filter-label">Категорія</label>
+                        <select name="categoryId" asp-items="ViewBag.Categories" class="form-select form-select-sm">
+                            <option value="">Оберіть категорію</option>
+                        </select>
+                    </div>
+
+                    <!-- Сортування -->
+                    <div class="filter-field">
+                        <label class="filter-label">Сортування</label>
+                        <select name="SortBy" class="form-select form-select-sm">
+                            <option value="" selected="@(ViewBag.CurrentSort == null)">Спочатку нові</option>
+                            <option value="date_old" selected="@(ViewBag.CurrentSort == "date_old")">Спочатку старі</option>
+                            <option value="price_increase" selected="@(ViewBag.CurrentSort == "price_increase")">Від дешевших до дорогих</option>
+                            <option value="price_reduc" selected="@(ViewBag.CurrentSort == "price_reduc")">Від дорогих до дешевших</option>
+                        </select>
+                    </div>
+
+                    <!-- Ціна (від / до) -->
+                    <div class="filter-field">
+                        <label class="filter-label">Ціна, ₴</label>
+                        <div class="d-flex gap-2">
+                            <input type="number" name="MinPrice" value="@ViewBag.MinPrice" placeholder="від" class="form-control form-control-sm"/>  
+                            <input type="number" name="MaxPrice" value="@ViewBag.MaxPrice" placeholder="до" class="form-control form-control-sm"/>  
+                        </div>
+                    </div>
+
+                    <!-- Чекбокс знижки -->
+                    <div class="filter-field">
+                        <label class="product-form__toggle">
+                            <input type="checkbox" name="HasDiscount" value="true" checked="@(ViewBag.HasDiscount == true)"/>
+                            <span class="product-form__toggle-slider"></span>
+                            <span class="filter-toggle-text">Тільки зі знижкою</span>
+                        </label>
+                    </div>
+
+                    <!-- Стан товару -->
+                    <div class="filter-field">
+                        <label class="filter-label">Стан</label>
+                        <select name="condition" class="form-select form-select-sm">
+                            <option value="">Оберіть варіант</option>
+                            <option value="0" selected="@(ViewBag.CurrentCondition?.ToString() == "0")">Новий</option>
+                            <option value="1" selected="@(ViewBag.CurrentCondition?.ToString() == "1")">Б/У (Вживаний)</option>
+                            <option value="2" selected="@(ViewBag.CurrentCondition?.ToString() == "2")">Відновлений</option>
+                        </select>
+                    </div>
+                       
+                    <!-- Кнопки керування -->
+                    <div class="filter-buttons mt-3">
+                        <button type="submit" class="compfix-btn compfix-btn--submit w-100">Застосувати</button>
+                        <a asp-action="UserInterface" class="filter-reset-link w-100">Скасувати</a>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const searchInput = document.getElementById("searchInputField");
+            const searchForm = document.getElementById("searchForm");
+
+            if (searchInput && searchForm) {
+                // Пошуковий рядок відправляє запит самостійно по натисканню Enter
+                searchInput.addEventListener("keypress", function (e) {
+                    if (e.key === "Enter") {
+                        e.preventDefault();
+                        searchForm.submit();
+                    }
+                });
+            }
+        });
+    </script>
+}
+
+<style>
+    .placeholder-light::placeholder {
+        color: #adb5bd !important;
+        opacity: 1;
+    }
+</style>

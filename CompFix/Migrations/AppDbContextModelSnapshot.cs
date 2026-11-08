@@ -125,6 +125,110 @@ namespace CompFix.Migrations
                     b.ToTable("CartItems");
                 });
 
+            modelBuilder.Entity("CompFix.Models.Category", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("id");
+
+                    b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            id = 1,
+                            Name = "Комп'ютери"
+                        },
+                        new
+                        {
+                            id = 2,
+                            Name = "Ноутбуки"
+                        },
+                        new
+                        {
+                            id = 16,
+                            Name = "Ігрові комп'ютери"
+                        },
+                        new
+                        {
+                            id = 17,
+                            Name = "Ігрові ноутбуки"
+                        },
+                        new
+                        {
+                            id = 3,
+                            Name = "Смартфони"
+                        },
+                        new
+                        {
+                            id = 4,
+                            Name = "Планшети"
+                        },
+                        new
+                        {
+                            id = 5,
+                            Name = "Аксесуари"
+                        },
+                        new
+                        {
+                            id = 6,
+                            Name = "Ігрові приставки"
+                        },
+                        new
+                        {
+                            id = 7,
+                            Name = "Телевізори"
+                        },
+                        new
+                        {
+                            id = 8,
+                            Name = "Процесори"
+                        },
+                        new
+                        {
+                            id = 9,
+                            Name = "Відеокарти"
+                        },
+                        new
+                        {
+                            id = 10,
+                            Name = "Материнські плати"
+                        },
+                        new
+                        {
+                            id = 11,
+                            Name = "Оперативна пам'ять"
+                        },
+                        new
+                        {
+                            id = 12,
+                            Name = "Вібратори"
+                        },
+                        new
+                        {
+                            id = 13,
+                            Name = "Люди"
+                        },
+                        new
+                        {
+                            id = 14,
+                            Name = "Монітори"
+                        },
+                        new
+                        {
+                            id = 15,
+                            Name = "Побутова техніка"
+                        });
+                });
+
             modelBuilder.Entity("CompFix.Models.Order", b =>
                 {
                     b.Property<int>("Id")
@@ -202,6 +306,9 @@ namespace CompFix.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("CategoryId")
+                        .HasColumnType("int");
+
                     b.Property<int>("Condition")
                         .HasColumnType("int");
 
@@ -235,6 +342,8 @@ namespace CompFix.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("Products");
                 });
@@ -385,6 +494,15 @@ namespace CompFix.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("CompFix.Models.Product", b =>
+                {
+                    b.HasOne("CompFix.Models.Category", "Category")
+                        .WithMany("Products")
+                        .HasForeignKey("CategoryId");
+
+                    b.Navigation("Category");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -434,6 +552,11 @@ namespace CompFix.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("CompFix.Models.Category", b =>
+                {
+                    b.Navigation("Products");
                 });
 
             modelBuilder.Entity("CompFix.Models.Order", b =>

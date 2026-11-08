@@ -8,7 +8,7 @@
 	<div class="product-form__title-wrapper">
 		<h1 class="product-form__title">Редагувати товар 🖥️</h1>
 	</div>
-	<form asp-controller="Admin" asp-action="EditProduct" method="post" enctype="multipart/form-data" class="product-form">
+	<form asp-controller="Admin" asp-action="EditProductAsync" method="post" enctype="multipart/form-data" class="product-form">
 		<input type="hidden" asp-for="Id" />
 		<div asp-validation-summary="ModelOnly" class="product-form__validation "> </div>
 		<!-- Назва товару -->
@@ -17,6 +17,14 @@
 			<input asp-for="Name" class="form-control" placeholder="Введіть назву товару" />
 			<span asp-validation-for="Name" class="product-form__error"></span>
 		</div>
+		<!-- Категорія -->
+        <div class="name-product">
+		<label asp-for="CategoryId" class="form-label">Категорія товару</label>
+		<select asp-for="CategoryId" asp-items="ViewBag.Categories" class="product-form__select">
+			<option value="" class="variety"> Оберіть категорію</option>
+		</select>
+		<span asp-validation-for="CategoryId" class="product-form__error"></span>
+        </div>
 		<!-- Опис -->
 		<div class="name-product">
 			<label asp-for="Description" class="form-label">Опис</label>

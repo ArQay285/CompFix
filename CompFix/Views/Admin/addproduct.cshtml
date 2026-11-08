@@ -3,12 +3,11 @@
 	ViewData["Title"] = "Додавання нового товару";
 }
 
-
 <div class="product-form__container">
 	<div class="product-form__title-wrapper">
 		<h1 class="product-form__title">Додавання нового товару 🖥️</h1>
 	</div>
-	<form asp-controller="Admin" asp-action="AddProduct" method="post" enctype="multipart/form-data" class="product-form">
+	<form asp-controller="Admin" asp-action="AddProductAsync" method="post" enctype="multipart/form-data" class="product-form">
 		<div asp-validation-summary="ModelOnly" class="product-form__validation "> </div>
 		<!-- Назва товару -->
 		<div class="name-product">
@@ -16,6 +15,14 @@
 			<input asp-for="Name" class="form-control" placeholder="Введіть назву товару" />
 			<span asp-validation-for="Name" class="product-form__error"></span>
 		</div>
+        <!-- Категорія -->
+        <div class="name-product">
+		<label asp-for="CategoryId" class="form-label">Категорія товару</label>
+		<select asp-for="CategoryId" asp-items="ViewBag.Categories" class="product-form__select">
+			<option value="" class="variety"> Оберіть категорію</option>
+		</select>
+		<span asp-validation-for="CategoryId" class="product-form__error"></span>
+        </div>
 		<!-- Опис -->
 		<div class="name-product">
 			<label asp-for="Description" class="form-label">Опис</label>
@@ -69,8 +76,9 @@
 				<div class="name-product">
 					<label for="image" class="product-form__label">Фото товару</label>
 					<input type="file" name="image" id="image" class="form-control" accept=".jpg,.jpeg,.png" onchange="previewImage(event)" />
-					<div class="imagen" id="imagePreviewContainer">
-						<img class="imagen-inside" id="imagePreview" src="#" alt="Недоступно фото">
+					<div class="imagen-preview-wrapper" id="imagePreviewContainer" style="display: none;">
+						<img class="imagen-inside" id="imagePreview" src="#" alt="Прев'ю">
+						<button type="button" class="image-remove-btn" onclick="removeImage()" title="Видалити обране фото">✕</button>
 					</div>
 					@if (ViewData.ModelState["Image"] != null)
 					{
@@ -91,27 +99,35 @@
 
 
 <script>
-	function previewImage(event) {
-		var reader = new FileReader();
-		var imagePreview = document.getElementById('imagePreview');
-		var previewContainer = document.getElementById('imagePreviewContainer');
+    // 1. Показ фото після вибору файлу
+    function previewImage(event) {
+        var input = event.target;
+        var reader = new FileReader();
+        var imagePreview = document.getElementById('imagePreview');
+        var previewContainer = document.getElementById('imagePreviewContainer');
 
-		reader.onload = function () {
-			imagePreview.src = reader.result;
-			previewContainer.style.display = 'block'; // Показуємо контейнер з картинкою
-		}
+        if (input.files && input.files[0]) {
+            reader.onload = function () {
+                imagePreview.src = reader.result;
+                previewContainer.style.display = 'inline-block'; // Показуємо рамку з фото та кнопкою
+            }
+            reader.readAsDataURL(input.files[0]);
+        } else {
+            removeImage();
+        }
+    }
 
-		if (event.target.files[0]) {
-			reader.readAsDataURL(event.target.files[0]);
-		} else {
-			previewContainer.style.display = 'none';
-		}
-	}
+    // 2. Видалення фото та очищення input
+    function removeImage() {
+        var fileInput = document.getElementById('image');
+        var imagePreview = document.getElementById('imagePreview');
+        var previewContainer = document.getElementById('imagePreviewContainer');
+
+        fileInput.value = ''; // Скидаємо обраний файл з інпуту
+        imagePreview.src = '#';
+        previewContainer.style.display = 'none'; 
+    }
 </script>
-
-@section Scripts {
-	<partial name="_ValidationScriptsPartial" />
-}
 
 
     
