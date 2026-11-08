@@ -78,8 +78,9 @@
 				<div class="name-product">
 					<label for="image" class="product-form__label">Фото товару</label>
 					<input type="file" name="image" id="image" class="form-control" accept=".jpg,.jpeg,.png" onchange="previewImage(event)" />
-					<div class="imagen" id="imagePreviewContainer" style="@(string.IsNullOrEmpty(Model.ImageUrl) ? "display: none;" : "display: inline-block;")">
-						<img class="imagen-inside" id="imagePreview" src="@(string.IsNullOrEmpty(Model.ImageUrl) ? "#" : Model.ImageUrl)" alt="Прев'ю фото" />
+					<div class="imagen-preview-wrapper" id="imagePreviewContainer" style="@(string.IsNullOrEmpty(Model?.ImageUrl) ? "display: none;" : "display: inline-block;")">
+						<img class="imagen-inside" id="imagePreview" src="@(string.IsNullOrEmpty(Model?.ImageUrl) ? "#" : Model.ImageUrl)" alt="Прев'ю фото" />
+						<button type="button" class="image-remove-btn" onclick="removeImage()" title="Видалити фото">✕</button>
 					</div>
 					@if (ViewData.ModelState["Image"] != null)
 					{
@@ -97,23 +98,32 @@
 </div>
 <script>
 	function previewImage(event) {
+		var input = event.target;
 		var reader = new FileReader();
 		var imagePreview = document.getElementById('imagePreview');
 		var previewContainer = document.getElementById('imagePreviewContainer');
 
-		reader.onload = function () {
-			imagePreview.src = reader.result;
-			previewContainer.style.display = 'block'; // Показуємо контейнер з картинкою
-		}
-
-		if (event.target.files[0]) {
-			reader.readAsDataURL(event.target.files[0]);
-		} else {
-			previewContainer.style.display = 'none';
+		if (input.files && input.files[0]) {
+			reader.onload = function () {
+				imagePreview.src = reader.result;
+				previewContainer.style.display = 'inline-block';
+			}
+			reader.readAsDataURL(input.files[0]);
 		}
 	}
-</script>
 
+	function removeImage() {
+		var fileInput = document.getElementById('image');
+		var imagePreview = document.getElementById('imagePreview');
+		var previewContainer = document.getElementById('imagePreviewContainer');
+
+		if (fileInput) {
+			fileInput.value = '';
+		}
+		imagePreview.src = '#';
+		previewContainer.style.display = 'none';
+	}
+</script>
 
 @section Scripts {
 	<partial name="_ValidationScriptsPartial" />

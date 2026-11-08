@@ -1050,3 +1050,47 @@ color: #2d3436;
     color: #d93025;
     border-color: #f9c2c0;
 }
+.imagen-preview-wrapper {
+    position: relative;
+    display: inline-block;
+    margin-top: 10px;
+    border: 3px solid var(--light-purple);
+    border-radius: 10px;
+    overflow: hidden;
+    max-width: 180px;
+}
+
+.imagen-inside {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: contain;
+}
+
+/* Кнопка-хрестик у верхньому правому кутку фото */
+.image-remove-btn {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    width: 26px;
+    height: 26px;
+    background-color: #dc3545;
+    color: #ffffff;
+    border: none;
+    border-radius: 50%;
+    font-size: 14px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Виправлено на center */
+    padding: 0;
+    line-height: 1;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+    .image-remove-btn:hover {
+        background-color: #bb2d3b;
+        transform: scale(1.1);
+    }
