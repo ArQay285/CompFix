@@ -1,27 +1,35 @@
-﻿@model IEnumerable<CompFix.Models.Product>
+﻿@model IEnumerable<Product>
 
 @section HeaderSearch {
-    <form id="globalSearchForm" asp-controller="Account" asp-action="UserInterface" method="get" class="w-100 h-100 d-flex align-items-center py-1">
-        <div class="input-group bg-dark rounded-3 overflow-hidden border-0 shadow-sm w-100">
-            <input type="text" name="search" value="@ViewBag.CurrentSearch" class="form-control bg-dark text-light border-0 placeholder-light px-3 py-2" placeholder="Я шукаю..." />
-            <button type="submit" class="btn btn-dark border-0 px-4 d-flex align-items-center gap-2">
-                🔍 <span>Знайти</span>
-            </button>
-        </div>
-    </form>
+    <form id="globalSearchForm" asp-controller="Account" asp-action="UserInterface" method="get" class="global-search-form">
+    <div class="search-box-wrapper">
+        <input type="text" name="search" value="@ViewBag.CurrentSearch" class="search-input-field" placeholder="Я шукаю..." />
+        <button type="submit" class="search-submit-btn">
+            🔍 <span>Знайти</span>
+        </button>
+    </div>
+</form>
 }
 
 <div class="catalog-container py-4">
     
-    <div class="catalog-top-bar mb-3">
+    <div class="catalog-top-bar ">
+        <div>
         <nav class="catalog-breadcrumbs mb-1 text-muted small">
             <a asp-controller="Account" asp-action="UserInterface" class="text-decoration-none text-secondary">Усі товари</a> 
             <span class="mx-1">›</span> 
             <span class="text-dark fw-semibold">Каталог товарів</span>
         </nav>
         <h2 class="fw-bold">Каталог товарів 📦</h2>
+        </div>
+        @if(User.Identity != null && User.Identity.IsAuthenticated && User.IsInRole("admin"))
+    {
+         <div class="addtovar">
+                <a  asp-controller="Admin"asp-action="AllProducts" class="addtovar-link">Адмінська Панель</a>
+          </div>
+    }
     </div>
-
+   
     <div class="catalog-layout">
         <!-- 1. ЗОНА ТОВАРІВ -->
         <div class="catalog-main">
@@ -37,6 +45,7 @@
                     @foreach (var product in Model)
                     {
                         <div class="compfix-card">
+                            <a asp-controller="Account" asp-action="Details" asp-route-id="@product.Id" class="compfix-card__overlay-link"></a>
                             <div class="compfix-card__img-box">
                                 @if (!string.IsNullOrEmpty(product.ImageUrl))
                                 {
@@ -80,8 +89,8 @@
 
                                 <!-- Кнопка детальніше -->
                                 <div class="compfix-card__buttons">
-                                    <a asp-controller="Product" asp-action="Details" asp-route-id="@product.Id" class="compfix-btn compfix-btn--submit w-100">
-                                        Детальніше
+                                    <a href="#" class="compfix-btn-cart">
+                                        <img src="~/img/header/shopping-cart.svg" alt="Кошик" class="compfix-btn-cart__icon">
                                     </a>
                                 </div>
                             </div>

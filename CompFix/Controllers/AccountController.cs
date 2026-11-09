@@ -23,6 +23,20 @@ namespace CompFix.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound("Такого айді нету");
+            }
+            var product = await _productRepo.GetByIdAsync(id.Value);
+            if(product == null)
+            {
+                return NotFound("Товар не знайдено");
+            }
+
+            return View(product);
+        }
         public async Task<IActionResult> UserInterface([FromServices] ControlBaseDate<Category> categories,
             string? search,
             int? categoryId,
@@ -133,7 +147,7 @@ namespace CompFix.Controllers
                         if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl)) {
                             return Redirect(returnUrl);
                         }
-                        return RedirectToAction("Index", "Admin");
+                        return RedirectToAction("allproducts", "Admin");
                     }
 
                 }
@@ -251,7 +265,7 @@ namespace CompFix.Controllers
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("UserInterface", "Account");
         }
     }
 }

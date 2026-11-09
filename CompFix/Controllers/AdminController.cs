@@ -24,14 +24,8 @@ namespace CompFix.Controllers
             _productRepo = productRepo;
             _webHostEnvironment = webHostEnvironment;
         }
-   
-        [Route("")] // Відповідає адресі /admin
-        [Route("index")]
-        public async Task<IActionResult> Index()
-        {
-            await Task.CompletedTask;
-            return View();
-        }
+
+
         //Видаляє фото яке вже не використвуєтсья з папки
         private void DeleteExistFile(Product existingProduct)
         {
@@ -44,6 +38,8 @@ namespace CompFix.Controllers
                 }
             }
         }
+        
+        [Route("")] // Відповідає адресі /admin
         [HttpGet("allproducts")]
         /// <summary>
         /// Сторінка зі списком усіх товарів

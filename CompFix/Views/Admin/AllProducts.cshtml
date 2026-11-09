@@ -1,12 +1,17 @@
-﻿@model IEnumerable<CompFix.Models.Product>
+﻿@model IEnumerable<Product>
 @{
-    ViewData["Title"] = "Каталог Товарів";
+    ViewData["Title"] = "(Адмін)Каталог Товарів";
 }
 <div class="catalog-container">
     <!-- Шапка сторінки -->
-    <div class="catalog-header">
-        <h2>Каталог товарів 📦</h2>
-    </div>
+        <div class="catalog-header">
+        <div class="catalog-title-pill">
+            <h2>(Адмін)Каталог товарів 📦</h2>
+        </div>
+            <div class="addtovar">
+                <a asp-action="AddProduct" class="addtovar-link">Додати товар</a>
+            </div>
+        </div>
     <!-- Основна сітка: Ліворуч товари, Праворуч фільтри -->
     <div class="catalog-layout">
         <!-- 1. ЗОНА ТОВАРІВ -->

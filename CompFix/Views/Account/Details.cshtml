@@ -1,0 +1,71 @@
+﻿@model CompFix.Models.Product
+@{
+	ViewData["Title"] = "Інформація про товар";
+}
+<div class="product-details-container">
+	<!-- Хлібні крихти -->
+	<div class="breadcrumbs-wrapper">
+		<nav class="catalog-breadcrumbs">
+			<a asp-controller="Account" asp-action="UserInterface" class="breadcrumb-link">Усі товари</a>
+			<span class="breadcrumb-separator">></span>
+			<span class="breadcrumb-current">Інформація про товар</span>
+		</nav>
+	</div>
+	<!-- Заголовок сторінки -->
+	<div class="product-top-bar">
+		<h2 class="page-main-title">Інформація про товар</h2>
+	</div>
+	<div class="product-details-grid">
+		<!-- Ліва колонка: Фото -->
+		<div class="product-gallery-column"	>
+			<div class="product-img-box">
+				@if (!string.IsNullOrEmpty(Model.ImageUrl))
+				{
+					<img src="@Model.ImageUrl" alt="@Model.Name" class="product-main-img" />
+				}else
+                {
+                    <div class="product-no-img">Без фото</div>
+                }
+			</div>
+		</div>
+		<!-- Права колонка: Інформація -->
+		<div class="product-info-column">
+			<h1 class="product-title">@Model.Name </h1>
+		<div class="product-meta-row">
+				<span class="status-badge-green">Є в наявності</span>
+			<div class="seller-box">
+				<span class="seller-text">Продавець:</span>
+				<img src="~/img/comp-fix-logo.svg" alt="CompFix" class="seller-logo" />
+			</div>	
+				
+
+		</div>
+
+		<hr class="section-divider"/>
+		<div class="product-price-row">
+			@if (Model.Discount > 0)
+                {
+                    <div class="discount-box">
+                        <span class="product-old-price">@Model.Price.ToString("N0") ₴</span>
+                        <span class="compfix-card__discount-tag">-@Model.Discount%</span>
+                    </div>
+                    <div class="product-main-price">@Model.DiscountedPrice.ToString("N0") ₴</div>
+                }
+                else
+                {
+                    <div class="product-main-price">@Model.Price.ToString("N0") ₴</div>
+                }
+		</div>
+			<a asp-controller="Cart" asp-action="Create" asp-route-productId="@Model.Id" class="compfix-btn-order2">
+                🛒 Оформити замовлення
+            </a>
+			<div class="product-description-box">
+				<h5 class="description-heading">Опис товару</h5>
+				<p class="description-text">
+                    @(string.IsNullOrEmpty(Model.Description) ? "Опис для даного товару поки що відсутній." : Model.Description)
+                </p>
+			</div>
+
+		</div>
+	</div>
+</div>
