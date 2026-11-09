@@ -32,7 +32,15 @@
 		<div class="product-info-column">
 			<h1 class="product-title">@Model.Name </h1>
 		<div class="product-meta-row">
-				<span class="status-badge-green">Є в наявності</span>
+				@if(!(Model.Quantity < 2))
+				{
+					<span class="status-badge-green">Є в наявності</span>
+				}
+				else
+				{
+					<span class="status-badge-orange">Закінчується</span>
+				}
+
 			<div class="seller-box">
 				<span class="seller-text">Продавець:</span>
 				<img src="~/img/comp-fix-logo.svg" alt="CompFix" class="seller-logo" />
