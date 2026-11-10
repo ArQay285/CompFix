@@ -45,73 +45,73 @@ namespace CompFix.Controllers
         /// Сторінка зі списком усіх товарів
         /// </summary>
         /// <returns></returns>
-        public async Task<IActionResult> AllProducts([FromServices] ControlBaseDate<Category> categories,
-            string? search,
-            int? categoryId,
-            int? condition,
-            bool? IsAvailable,
-            bool? HasDiscount,
-            string? stockStatus,
-            decimal?MinPrice,
-            decimal? MaxPrice,
-            string? SortBy)
-        {
-            var allproduct = _productRepo.GetQueryable().Include(p => p.Category).AsQueryable();
-            // 2. Текстовий пошук за назвою товару
-            if (!string.IsNullOrWhiteSpace(search))
+            public async Task<IActionResult> AllProducts([FromServices] ControlBaseDate<Category> categories,
+                string? search,
+                int? categoryId,
+                int? condition,
+                bool? IsAvailable,
+                bool? HasDiscount,
+                string? stockStatus,
+                decimal?MinPrice,
+                decimal? MaxPrice,
+                string? SortBy)
             {
-                allproduct = allproduct.Where(p => p.Name.Contains(search));
+                var allproduct = _productRepo.GetQueryable().Include(p => p.Category).AsQueryable();
+                // 2. Текстовий пошук за назвою товару
+                if (!string.IsNullOrWhiteSpace(search))
+                {
+                    allproduct = allproduct.Where(p => p.Name.Contains(search));
+                }
+                if(categoryId.HasValue && categoryId.Value > 0)
+                {
+                    allproduct = allproduct.Where(p => p.CategoryId == categoryId.Value);
+                }
+                if(HasDiscount == true)
+                {
+                    allproduct = allproduct.Where(p => p.Discount > 0);
+                }
+                if(stockStatus == "low")
+                {
+                    allproduct = allproduct.Where(p => p.Quantity > 0 && p.Quantity <= 3);
+                }else if(stockStatus == "out"){
+                    allproduct = allproduct.Where(p => p.Quantity == 0);
+                }
+                if(IsAvailable == true)
+                {
+                    allproduct = allproduct.Where(p => p.IsAvailable && p.Quantity > 0);
+                }
+                if (condition.HasValue && condition.Value > 0)
+                {
+                    allproduct = allproduct.Where(p => p.Condition == (ItemCondition)condition);
+                }
+                if (MinPrice.HasValue)
+                {
+                    allproduct = allproduct.Where(p => p.Price >= MinPrice);
+                }
+                if (MaxPrice.HasValue)
+                {
+                    allproduct = allproduct.Where(p => p.Price <= MaxPrice.Value);
+                }
+                allproduct = SortBy switch
+                {
+                    "price_increase" => allproduct.OrderBy(p => p.Price),
+                    "price_reduc" => allproduct.OrderByDescending(p => p.Price),
+                    "date_old" => allproduct.OrderBy(p => p.CreatedAt),
+                    _          => allproduct.OrderByDescending(p => p.CreatedAt)
+                };
+                var catageries = await categories.GetAllAsync();
+                ViewBag.Categories = new SelectList(catageries, "id", "Name", categoryId);
+                ViewBag.CurrentSearch = search;
+                ViewBag.CurrentSort = SortBy;
+                ViewBag.CurrentCondition = condition;
+                ViewBag.MinPrice = MinPrice;
+                ViewBag.MaxPrice = MaxPrice;
+                ViewBag.HasDiscount = HasDiscount;  
+                ViewBag.IsAvailable = IsAvailable;
+                ViewBag.StockStatus = stockStatus;
+                var listproduct = await allproduct.ToListAsync();
+                return View(listproduct);
             }
-            if(categoryId.HasValue && categoryId.Value > 0)
-            {
-                allproduct = allproduct.Where(p => p.CategoryId == categoryId.Value);
-            }
-            if(HasDiscount == true)
-            {
-                allproduct = allproduct.Where(p => p.Discount > 0);
-            }
-            if(stockStatus == "low")
-            {
-                allproduct = allproduct.Where(p => p.Quantity > 0 && p.Quantity <= 3);
-            }else if(stockStatus == "out"){
-                allproduct = allproduct.Where(p => p.Quantity == 0);
-            }
-            if(IsAvailable == true)
-            {
-                allproduct = allproduct.Where(p => p.IsAvailable && p.Quantity > 0);
-            }
-            if (condition.HasValue && condition.Value > 0)
-            {
-                allproduct = allproduct.Where(p => p.Condition == (ItemCondition)condition);
-            }
-            if (MinPrice.HasValue)
-            {
-                allproduct = allproduct.Where(p => p.Price >= MinPrice);
-            }
-            if (MaxPrice.HasValue)
-            {
-                allproduct = allproduct.Where(p => p.Price <= MaxPrice.Value);
-            }
-            allproduct = SortBy switch
-            {
-                "price_increase" => allproduct.OrderBy(p => p.Price),
-                "price_reduc" => allproduct.OrderByDescending(p => p.Price),
-                "date_old" => allproduct.OrderBy(p => p.CreatedAt),
-                _          => allproduct.OrderByDescending(p => p.CreatedAt)
-            };
-            var catageries = await categories.GetAllAsync();
-            ViewBag.Categories = new SelectList(catageries, "id", "Name", categoryId);
-            ViewBag.CurrentSearch = search;
-            ViewBag.CurrentSort = SortBy;
-            ViewBag.CurrentCondition = condition;
-            ViewBag.MinPrice = MinPrice;
-            ViewBag.MaxPrice = MaxPrice;
-            ViewBag.HasDiscount = HasDiscount;  
-            ViewBag.IsAvailable = IsAvailable;
-            ViewBag.StockStatus = stockStatus;
-            var listproduct = await allproduct.ToListAsync();
-            return View(listproduct);
-        }
 
         [HttpGet("getbyid/{id}")]
         public async Task<IActionResult> GetById(int id)

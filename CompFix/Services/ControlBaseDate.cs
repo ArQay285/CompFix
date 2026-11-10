@@ -49,6 +49,15 @@ namespace CompFix.Services
         {
             return db.Set<T>().AsQueryable();
         }
+        public async Task<bool> RemoveUserItemAsync(int id, string userId)
+        {
+            var item = await db.CartItems.FirstOrDefaultAsync(c => c.Id == id && c.UserId == userId);
+            if (item == null) return false;
+
+            db.CartItems.Remove(item);
+            await db.SaveChangesAsync();
+            return true;
+        }
 
     }
 
