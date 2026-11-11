@@ -53,7 +53,13 @@ namespace CompFix.Services
         {
             var item = await db.CartItems.FirstOrDefaultAsync(c => c.Id == id && c.UserId == userId);
             if (item == null) return false;
-
+            var product = await db.Products.FirstOrDefaultAsync(p => p.Id == item.ProductId);
+            if (product != null)
+            {
+               
+                product.Quantity += 1;
+                db.Products.Update(product);
+            }
             db.CartItems.Remove(item);
             await db.SaveChangesAsync();
             return true;

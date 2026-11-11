@@ -1,0 +1,201 @@
+﻿@model IEnumerable<CompFix.Models.CartItem>
+@{
+    ViewData["Title"] = "Ваш кошик";
+    int totalItems = Model?.Sum(x => x.Quantity) ?? 0;
+    decimal totalSum = ViewBag.TotalSum ?? 0;
+}
+
+<div class="cart-container">
+
+   
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="cart-success-banner">
+            <span class="cart-success-icon">🎉</span>
+            <div class="cart-success-content">
+                <strong>Покупка успішна!</strong>
+                <span>@TempData["SuccessMessage"]</span>
+            </div>
+        </div>
+    }
+
+    <!-- Хлібні крихти -->
+    <div class="breadcrumbs-wrapper">
+        <nav class="catalog-breadcrumbs">
+            <a asp-controller="Account" asp-action="UserInterface" class="breadcrumb-link">Головна</a>
+            <span class="breadcrumb-separator">›</span>
+            <span class="breadcrumb-current">Ваш кошик</span>
+        </nav>
+    </div>
+
+    <!-- Заголовок -->
+    <div class="cart-header">
+        <h2 class="page-main-title">
+            Ваш кошик
+            @if (totalItems > 0)
+            {
+                <span class="cart-count">(@totalItems @(totalItems == 1 ? "продукт" : "продукти/ів"))</span>
+            }
+            🛒
+        </h2>
+    </div>
+
+    <div class="cart-layout">
+        <!-- ЛІВА КОЛОНКА: Список товарів -->
+        <div class="cart-main">
+            @if (Model == null || !Model.Any())
+            {
+                <div class="catalog-empty-state">
+                    <p>Ваш кошик наразі порожній</p>
+                    <a asp-controller="Account" asp-action="UserInterface" class="compfix-btn compfix-btn--submit cart-empty-btn">Перейти до каталогу</a>
+                </div>
+            }
+            else
+            {
+                <div class="cart-items-list">
+                    @foreach (var item in Model)
+                    {
+                        <div class="cart-item">
+                           
+                            <a asp-controller="Account" asp-action="Details" asp-route-id="@item.ProductId" class="cart-item__overlay-link"></a>
+
+                         
+                            <div class="cart-item__media">
+                                @if (!string.IsNullOrEmpty(item.ImageUrl))
+                                {
+                                    <img src="@item.ImageUrl" alt="@item.ProductName" class="cart-item__img" />
+                                }
+                                else
+                                {
+                                    <div class="compfix-card__no-img">Без фото</div>
+                                }
+                            </div>
+                            
+                            
+                            <div class="cart-item__details">
+                                <h3 class="cart-item__name" title="@item.ProductName">@item.ProductName</h3>
+                                <span class="compfix-card__badge cart-item__badge-condition">
+                                    @(item.Cart_Condition == CompFix.Models.ItemCondition.New ? "Новий" :
+                                      item.Cart_Condition == CompFix.Models.ItemCondition.Used ? "Б/У" : "Відновлений")
+                                </span>
+                            </div>
+                            
+                            
+                            <div class="cart-item__action">
+                                <div class="cart-item__price-block">
+                                    @if (item.Cart_DiscountedPrice > 0 && item.Cart_DiscountedPrice < item.Price)
+                                    {
+                                        <div class="cart-item__price text-purple">@((item.Cart_DiscountedPrice * item.Quantity).ToString("N0")) ₴</div>
+                                        <div class="cart-item__old-price">@((item.Price * item.Quantity).ToString("N0")) ₴</div>
+                                    }
+                                    else
+                                    {
+                                        <div class="cart-item__price">@((item.Price * item.Quantity).ToString("N0")) ₴</div>
+                                    }
+                                </div>
+                                
+                                <form asp-controller="Cart" asp-action="RemoveFromCart" method="post" class="cart-item__form">
+                                    <input type="hidden" name="cartItemId" value="@item.Id" />
+                                    <button type="submit" class="cart-item__remove">Вилучити</button>
+                                </form>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+               
+                <div class="cart-actions-row">
+                    <a asp-controller="Account" asp-action="UserInterface" class="compfix-btn compfix-btn--cancel cart-btn-back">Назад до каталогу</a>
+                    <a asp-controller="Cart" asp-action="Checkout" class="compfix-btn compfix-btn--submit cart-btn-checkout">Перейти до оплати</a>
+                </div>
+            }
+
+            
+            <div class="recommended-section">
+                <h4 class="recommended-title">Рекомендоване для вас</h4>
+                <div class="products-grid">
+                    @if (ViewBag.RecommendedProducts is List<CompFix.Models.Product> recommended && recommended.Any())
+                    {
+                        @foreach (var product in recommended)
+                        {
+                            <div class="compfix-card">
+                                <a asp-controller="Account" asp-action="Details" asp-route-id="@product.Id" class="compfix-card__overlay-link"></a>
+                                <div class="compfix-card__img-box">
+                                    @if (!string.IsNullOrEmpty(product.ImageUrl))
+                                    {
+                                        <img src="@product.ImageUrl" alt="@product.Name" class="compfix-card__img" />
+                                    }
+                                    else
+                                    {
+                                        <div class="compfix-card__no-img">Без фото</div>
+                                    }
+                                </div>
+                                
+                                <div class="compfix-card__body">
+                                    <h6 class="compfix-card__title" title="@product.Name">@product.Name</h6>
+                                    
+                                    <div class="compfix-card__info">
+                                        <span class="compfix-card__badge mb-0">@(product.Category?.Name ?? "Без категорії")</span>
+                                        <span class="compfix-card__conditionfont">
+                                            @(product.Condition == CompFix.Models.ItemCondition.New ? "Новий" :
+                                              product.Condition == CompFix.Models.ItemCondition.Used ? "Б/У" : "Відновлений")
+                                        </span>
+                                    </div>
+                                    <div class="compfix-card__price-row">
+                                        @if(product.Discount > 0)
+                                        {   
+                                            <div class="compfix-card__old-price-box">
+                                                <span class="compfix-card__old-price">@product.Price.ToString("N0") ₴</span>
+                                                <span class="compfix-card__discount-tag">-@product.Discount%</span>
+                                            </div>
+                                            <div class="compfix-card__main-price text-purple">@product.DiscountedPrice.ToString("N0") ₴</div>
+                                        }
+                                        else
+                                        {
+                                            <div class="compfix-card__main-price">@product.Price.ToString("N0") ₴</div>
+                                        }
+                                    </div>
+
+                                    <div class="compfix-card__buttons">
+                                        <a asp-controller="Cart" asp-route-productId="@product.Id" asp-action="AddToCard" class="compfix-btn-cart">
+                                            <img src="~/img/header/shopping-cart.svg" alt="Кошик" class="compfix-btn-cart__icon">
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div class="catalog-empty-state catalog-empty-state--w100">
+                            <p class="recommended-placeholder">Наразі немає рекомендованих товарів</p>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        
+        <div class="cart-sidebar">
+            <div class="cart-summary-card">
+                <div class="cart-summary-header">
+                    <span class="summary-title">Попередній підсумок</span>
+                    <span class="summary-total">@totalSum.ToString("N0") ₴</span>
+                </div>
+                <p class="summary-desc">Доставка та податки будуть розраховані під час оформлення замовлення</p>
+                <a asp-controller="Cart" asp-action="Checkout" class="compfix-btn compfix-btn--submit cart-summary-btn">Перейти до оплати</a>
+            </div>
+
+            <div class="cart-info-card">
+                <div class="cart-info-icon">
+                    <img src="~/img/comp-fix-logo.svg" alt="Гарантія" class="cart-warranty-img" />
+                </div>
+                <p class="cart-info-text">Купуючи техніку в CompFix, ви отримуєте офіційну гарантію та підтримку.</p>
+                <div class="cart-info-link-wrapper">
+                    Усі умови гарантії можна переглянути тут: <br/>
+                    <a href="#" class="cart-warranty-link">Гарантійні зобов'язання</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

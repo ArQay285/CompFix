@@ -89,7 +89,7 @@
 
                                 <!-- Кнопка детальніше -->
                                 <div class="compfix-card__buttons">
-                                    <a href="#" class="compfix-btn-cart">
+                                    <a asp-controller="Cart"  asp-route-productId="@product.Id" " asp-action="AddToCard" class="compfix-btn-cart">
                                         <img src="~/img/header/shopping-cart.svg" alt="Кошик" class="compfix-btn-cart__icon">
                                     </a>
                                 </div>

@@ -9,9 +9,11 @@
         public string ProductName { get; set; } = string.Empty;
         public decimal Price { get; set; }
         public int Quantity { get; set; }
-
-        public decimal TotalPrice => Price * Quantity;
-
+        public decimal Cart_DiscountedPrice { get; set; }
+        public ItemCondition Cart_Condition { get; set; }
+        public decimal TotalPrice =>(Cart_DiscountedPrice > 0) ? Cart_DiscountedPrice * Quantity
+            : Price * Quantity;
+        public string ImageUrl { get; set; } = string.Empty;
 
     }
 }

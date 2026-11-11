@@ -13,7 +13,7 @@ namespace CompFix.Controllers
         private readonly ControlBaseDate<CartItem> _caritem;
         private readonly ControlBaseDate<Product> _product;
 
-        public CartController(AppDbContext db,ControlBaseDate<CartItem> caritem, ControlBaseDate<Product> product)
+        public CartController(AppDbContext db, ControlBaseDate<CartItem> caritem, ControlBaseDate<Product> product)
         {
             this.db = db;
             _caritem = caritem;
@@ -23,13 +23,13 @@ namespace CompFix.Controllers
         {
             if (User.Identity != null && User.Identity.IsAuthenticated)
             {
-                var id= User.FindFirstValue(ClaimTypes.NameIdentifier);
-                if(id != null)
+                var id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                if (id != null)
                 {
                     return id;
                 }
             }
-            if(Request.Cookies.TryGetValue("CartId", out string? existCartId))
+            if (Request.Cookies.TryGetValue("CartId", out string? existCartId))
             {
                 return existCartId;
             }
@@ -37,34 +37,34 @@ namespace CompFix.Controllers
             Response.Cookies.Append("CartId", newCardId, new CookieOptions { Expires = DateTime.Now.AddDays(30), HttpOnly = true });
             return newCardId;
         }
-        [HttpPost]
+        [HttpGet]
         public async Task<IActionResult> AddToCard(int productid)
         {
             string userId = GetCartUserId();
             var product = await _product.GetByIdAsync(productid);
-            if(product == null)
+            if (product == null)
             {
                 return NotFound("Товар не знайдено");
             }
-            var cartitem = await db.CartItems.FirstOrDefaultAsync(p => p.UserId == userId && p.ProductId == productid);
-            if(cartitem != null)
-            {
-                cartitem.Quantity++;
-                db.CartItems.Update(cartitem);
-            }
             else
             {
-                cartitem = new CartItem()
+                var cartitem = new CartItem()
                 {
                     UserId = userId,
                     ProductId = product.Id,
                     ProductName = product.Name,
                     Price = product.Price,
-                    Quantity = 1
+                    Quantity = 1,
+                    ImageUrl = product.ImageUrl,
+                        Cart_Condition = product.Condition,
+                    Cart_DiscountedPrice = product.DiscountedPrice
                 };
-                 
-             db.CartItems.Add(cartitem);
+
+
+                db.CartItems.Add(cartitem);
             }
+            product.Quantity--;
+            db.Products.Update(product);
             await db.SaveChangesAsync();
             return RedirectToAction("Korzuna");
         }
@@ -73,10 +73,26 @@ namespace CompFix.Controllers
         {
             string userId = GetCartUserId();
             var cartItems = await db.CartItems
+               .Where(c => c.UserId == userId)
+               .ToListAsync();
+
+            ViewBag.TotalSum = cartItems.Sum(c => c.TotalPrice);
+            ViewBag.RecommendedProducts = await db.Products
+                    .Where(p => p.IsAvailable && p.Quantity > 0)
+                    .OrderBy(r => Guid.NewGuid()) // Випадковий порядок
+                    .Take(4)
+                    .ToListAsync();
+            return View(cartItems);
+        }
+        [HttpGet]
+        public async Task<IActionResult> BlankZamodlen()
+        {
+            string userId = GetCartUserId();
+            var cartItems = await db.CartItems
             .Where(c => c.UserId == userId)
             .ToListAsync();
             ViewBag.TotalSum = cartItems.Sum(c => c.TotalPrice);
-            return View(cartItems);
+            return View(new Order());
 
         }
         [HttpPost]
@@ -112,7 +128,7 @@ namespace CompFix.Controllers
                     return RedirectToAction("Index");
                 }
                 order.TotalAmount = cartitems.Sum(p => p.TotalPrice);
-                foreach (var item in cartitems)
+               foreach (var item in cartitems)
                 {
                     order.OrderItems.Add(new OrderItem()
                     {
@@ -121,16 +137,18 @@ namespace CompFix.Controllers
                         Quantity = item.Quantity,
                         Price = item.Price
                     });
+                    
                 }
-                db.Orders.Add(order);
-                db.CartItems.RemoveRange(cartitems);
-                await db.SaveChangesAsync();
-                TempData["SuccessMessage"] = "Оплата успішно пройшла!";
-                return RedirectToAction("Korzuna");
-            }
-            else return BadRequest("Неправильно вказані дані");
+                    db.Orders.Add(order);
+                    db.CartItems.RemoveRange(cartitems);
+                    await db.SaveChangesAsync();
+                    TempData["SuccessMessage"] = "Оплата успішно пройшла!";
+                    return RedirectToAction("Korzuna");
+                
+            } else return BadRequest("Неправильно вказані дані");
+
 
         }
-
-        }
+    } 
 }
+

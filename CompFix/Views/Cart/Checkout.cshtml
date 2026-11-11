@@ -1,0 +1,88 @@
+﻿@model CompFix.Models.Order
+@{
+    ViewData["Title"] = "Оформлення замовлення";
+    var cartItems = ViewBag.CartItems as IEnumerable<CompFix.Models.CartItem> ?? new List<CompFix.Models.CartItem>();
+    decimal totalSum = ViewBag.TotalSum ?? 0;
+}
+
+<div class="product-form__container">
+    <div class="product-form__title-wrapper">
+        <h1 class="product-form__title">Бланк замовлення 📝</h1>
+    </div>
+
+    <form asp-controller="Cart" asp-action="Checkout" method="post" class="product-form">
+        <div asp-validation-summary="ModelOnly" class="product-form__validation"></div>
+
+        
+        <div class="name-product">
+            <label asp-for="CustomerName" class="form-label">ПІБ / Ім'я покупця</label>
+            <input asp-for="CustomerName" class="form-control" placeholder="Введіть ваше ім'я та прізвище" />
+            <span asp-validation-for="CustomerName" class="product-form__error"></span>
+        </div>
+
+        <div class="product-form__row">
+            <div class="name-product product-form__col">
+                <label asp-for="CustomerPhone" class="product-form__label">Номер телефону</label>
+                <input asp-for="CustomerPhone" class="form-control" placeholder="+380 (XX) XXX-XX-XX" />
+                <span asp-validation-for="CustomerPhone" class="product-form__error"></span>
+            </div>
+            <div class="name-product product-form__col">
+                <label asp-for="CustomerEmail" class="product-form__label">Email пошта</label>
+                <input asp-for="CustomerEmail" type="email" class="form-control" placeholder="example@mail.com" />
+                <span asp-validation-for="CustomerEmail" class="product-form__error"></span>
+            </div>
+        </div>
+
+        <div class="name-product">
+            <label asp-for="CustomerAddress" class="form-label">Адреса доставки</label>
+            <input asp-for="CustomerAddress" class="form-control" placeholder="Введіть місто, номер відділення або адресу" />
+            <span asp-validation-for="CustomerAddress" class="product-form__error"></span>
+        </div>
+
+        
+        <div class="name-product">
+            <label asp-for="PaymentMethod" class="form-label">Спосіб оплати</label>
+            <select asp-for="PaymentMethod" class="product-form__select">
+                <option value="Visa / Mastercard">💳 Оплата карткою (Visa / Mastercard)</option>
+                <option value="Кредитна картка">🏦 Кредитна картка / Оплата частинами</option>
+                <option value="Оплата при отриманні">📦 Оплата при отриманні (Накладений платіж)</option>
+            </select>
+            <span asp-validation-for="PaymentMethod" class="product-form__error"></span>
+        </div>
+
+        
+        <div class="checkout-items-box mt-3">
+            <label class="form-label mb-2">Товари у замовленні:</label>
+            <div class="checkout-items-list">
+                @foreach (var item in cartItems)
+                {
+                    <div class="checkout-item-row">
+                        <div class="checkout-item-title">
+                            <strong>@item.ProductName</strong>
+                            <span class="text-muted small"> × @item.Quantity шт.</span>
+                        </div>
+                        <div class="checkout-item-price">
+                            @item.TotalPrice.ToString("N0") ₴
+                        </div>
+                    </div>
+                }
+            </div>
+
+            
+            <div class="checkout-total-row">
+                <span>Всього до сплати:</span>
+                <strong class="text-purple fs-5">@totalSum.ToString("N0") ₴</strong>
+            </div>
+        </div>
+
+        
+        <div class="product-form__actions">
+            <a asp-controller="Cart" asp-action="Korzuna" class="product-form__btn product-form__btn--cancel">Назад до кошика</a>
+            <button type="submit" class="product-form__btn product-form__btn--submit">Підтвердити замовлення</button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
