@@ -42,9 +42,9 @@ namespace CompFix.Controllers
         {
             string userId = GetCartUserId();
             var product = await _product.GetByIdAsync(productid);
-            if (product == null)
+            if (product == null || !product.IsAvailable || product.Quantity <= 0)
             {
-                return NotFound("Товар не знайдено");
+                return BadRequest("Товар відсутній на складі");
             }
             else
             {
