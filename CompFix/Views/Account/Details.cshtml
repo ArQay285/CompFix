@@ -64,7 +64,7 @@
                     <div class="product-main-price">@Model.Price.ToString("N0") ₴</div>
                 }
 		</div>
-			<a asp-controller="Cart" asp-action="Create" asp-route-productId="@Model.Id" class="compfix-btn-order2">
+			<a asp-controller="Cart" asp-action="AddToCard" asp-route-productId="@Model.Id" class="compfix-btn-order2">
                 🛒 Оформити замовлення
             </a>
 			<div class="product-description-box">
