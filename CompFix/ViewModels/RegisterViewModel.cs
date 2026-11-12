@@ -25,6 +25,7 @@ namespace CompFix.ViewModels
         [StringLength(100, MinimumLength = 6, ErrorMessage = "Пароль має бути не менше 6 символів (до 100)")]
         public string Password { get; set; } = string.Empty;
 
+        [Required(ErrorMessage = "Підтвердіть пароль!")]
         [DataType(DataType.Password)]
         [Display(Name = "Підтвердження пароля")]
         [Compare("Password", ErrorMessage = "Паролі не збігаються")] 

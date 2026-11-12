@@ -4,6 +4,8 @@ namespace CompFix.Services
 {
     public class CustomIdentityErrorDescriber : IdentityErrorDescriber
     {
+        // Перевизначення повідомлень про помилки для локалізації на українську мову
+        // Пароль
         public override IdentityError PasswordTooShort(int length)
         {
             return new IdentityError {
@@ -41,6 +43,25 @@ namespace CompFix.Services
             return new IdentityError {
                 Code = nameof(PasswordRequiresNonAlphanumeric),
                 Description = "Пароль має містити хоча б один спеціальний символ (!@#$%^&*_-)."
+            };
+        }
+
+        // Пошта
+        // UserName дорівнює Email, тому перевизначаємо обидва методи одним повідомленням
+        public override IdentityError DuplicateUserName(string userName)
+        {
+            return new IdentityError {
+                Code = nameof(DuplicateUserName),
+                // Безпечне повідомлення без розкриття самої пошти
+                Description = "Не вдалося завершити реєстрацію. Можливо, цей email вже використовується. Спробуйте увійти."
+            };
+        }
+
+        public override IdentityError DuplicateEmail(string email)
+        {
+            return new IdentityError {
+                Code = nameof(DuplicateEmail),
+                Description = "Не вдалося завершити реєстрацію. Можливо, цей email вже використовується. Спробуйте увійти."
             };
         }
     }

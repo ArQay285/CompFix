@@ -1,4 +1,5 @@
 ﻿@inject IOptions<CompFix.Models.CompanyInfo> CompanyInfo
+@inject UserManager<ApplicationUser> UserManager
 @{
 	var company = CompanyInfo.Value;
 }
@@ -30,10 +31,9 @@
 				<a class="mainHeader__logo" asp-controller="Account" asp-action="UserInterface">
 					<img src="~/img/comp-fix-logo.svg" class="mainHeader__logo-img" alt="Лого">
 				</a>
-
 				<!-- 2. Пошуковий рядок (рендериться ТІЛЬКИ якщо сторінка його оголосила) -->
-                <div class="flex-grow-1 d-flex align-items-stretch py-1">
-            @RenderSection("HeaderSearch", required: false)
+				<div class="flex-grow-1 d-flex align-items-stretch py-1">
+					@RenderSection("HeaderSearch", required: false)
 				</div>
 				<!-- Кнопки -->
 				<ul class="mainHeader__list">
@@ -98,12 +98,15 @@
 		<!-- Drawer header -->
 		<div class="account-drawer__header">
 			<button id="closeDrawerBtn" class="account-drawer__close-btn" aria-label="Закрити">&times;</button>
-			<a class="account-drawer__logo" asp-controller="Home" asp-action="Index">
+			<a class="account-drawer__logo" asp-controller="Account" asp-action="UserInterface">
 				<img src="~/img/comp-fix-logo.svg" class="account-drawer__logo-img" alt="Лого">
 			</a>
 		</div>
 		<div class="account-drawer__content">
 			@if (User.Identity != null && User.Identity.IsAuthenticated) {
+				// Асинхронно отримує дані поточного користувача
+				var currentUser = await UserManager.GetUserAsync(User);
+
 				<!-- Якщо авторизований -->
 				@if (User.IsInRole("admin")) {
 					<!-- Якщо адмін -->
@@ -131,14 +134,19 @@
 							<img class="account-drawer__account-img" src="~/img/header/account-circle.svg">
 						</div>
 						<div class="account-drawer__user-info">
-							<span class="account-drawer__name"></span>
-							<span class="account-drawer__email">@User.Identity.Name</span>
+							<span class="account-drawer__name">@currentUser!.LastName @currentUser!.FirstName</span>
+							<span class="account-drawer__email">@currentUser.Email</span>
 						</div>
 					</div>
 					<ul class="account-drawer__action-list">
-						<form asp-controller="" asp-action="" method="post">
-							<button type="submit" class="account-drawer__btn">Вийти з профілю</button>
-						</form>
+						<li>
+							<a asp-controller="Account" asp-action="Settings" class="account-drawer__btn">Налаштування</a>
+						</li>
+						<li>
+							<form asp-controller="Account" asp-action="Logout" method="post">
+								<button type="submit" class="account-drawer__btn">Вийти з профілю</button>
+							</form>
+						</li>
 					</ul>
 				}
 			}
@@ -146,10 +154,10 @@
 				<!-- Якщо не авторизований -->
 				<ul class="account-drawer__action-list">
 					<li>
-						<a asp-controller="" asp-action="" class="account-drawer__btn">Увійти</a>
+						<a asp-controller="Account" asp-action="Login" class="account-drawer__btn">Увійти</a>
 					</li>
 					<li>
-						<a asp-controller="" asp-action="" class="account-drawer__btn">Зареєструватися</a>
+						<a asp-controller="Account" asp-action="Register" class="account-drawer__btn">Зареєструватися</a>
 					</li>
 				</ul>
 			}

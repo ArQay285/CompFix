@@ -4,11 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using System.Globalization;
-using System.Threading.Tasks;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
-using static System.Net.Mime.MediaTypeNames;
-using static System.Net.WebRequestMethods;
+
 namespace CompFix.Controllers
 {
     //Контролер для адміністратора, який дозволяє додавати, редагувати та видаляти товари.

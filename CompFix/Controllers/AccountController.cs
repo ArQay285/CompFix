@@ -5,9 +5,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
-using static System.Net.WebRequestMethods;
-
 
 namespace CompFix.Controllers
 {
@@ -17,7 +14,7 @@ namespace CompFix.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public AccountController(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager,ControlBaseDate<Product> product)
+        public AccountController(SignInManager<ApplicationUser> signInManager, UserManager<ApplicationUser> userManager, ControlBaseDate<Product> product)
         {
             _signInManager = signInManager;
             _userManager = userManager;
@@ -27,13 +24,11 @@ namespace CompFix.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
-            {
-                return NotFound("Такого айді нету");
+            if (id == null) {
+                return NotFound("Такого айді немає");
             }
             var product = await _productRepo.GetByIdAsync(id.Value);
-            if(product == null)
-            {
+            if (product == null) {
                 return NotFound("Товар не знайдено");
             }
 
@@ -42,9 +37,9 @@ namespace CompFix.Controllers
         public async Task<IActionResult> UserInterface([FromServices] ControlBaseDate<Category> categories,
            [FromQuery] ProductFilterParams filter)
         {
-            
-                var allproduct = _productRepo.GetQueryable().Include(p => p.Category).Where(p => p.IsAvailable && p.Quantity > 0).AsQueryable();
-            // 2. Текстовий пошук за назвою товару
+
+            var allproduct = _productRepo.GetQueryable().Include(p => p.Category).Where(p => p.IsAvailable && p.Quantity > 0).AsQueryable();
+            // Текстовий пошук за назвою товару
             var listproduct = await allproduct.ApplyProductFilter(filter).ToListAsync();
             var catageries = await categories.GetAllAsync();
             ViewBag.Categories = new SelectList(catageries, "id", "Name", filter.CategoryId);
@@ -62,12 +57,15 @@ namespace CompFix.Controllers
 
 
 
-           
-      
         // Адміни
         [HttpGet("admin/login")]
         public async Task<IActionResult> AdminLogin(string? returnUrl = null)
         {
+            // Якщо користувач вже авторизований, кидає на головну
+            if (User.Identity != null && User.Identity.IsAuthenticated) {
+                return RedirectToAction("UserInterface", "Account");
+            }
+
             ViewData["ReturnUrl"] = returnUrl;
             await Task.CompletedTask;
             return View();
@@ -118,6 +116,11 @@ namespace CompFix.Controllers
         [HttpGet("register")]
         public async Task<IActionResult> Register()
         {
+            // Якщо користувач вже авторизований, кидає на головну
+            if (User.Identity != null && User.Identity.IsAuthenticated) {
+                return RedirectToAction("UserInterface", "Account");
+            }
+
             await Task.CompletedTask;
             return View();
         }
@@ -152,7 +155,7 @@ namespace CompFix.Controllers
 
             if (result.Succeeded) {
                 await _signInManager.SignInAsync(user, isPersistent: false);
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("UserInterface", "Account");
             }
 
             foreach (var error in result.Errors) {
@@ -172,6 +175,11 @@ namespace CompFix.Controllers
                 return RedirectToAction("AdminLogin", "Account", new { returnUrl = returnUrl });
             }
 
+            // Якщо користувач вже авторизований, кидає на головну
+            if (User.Identity != null && User.Identity.IsAuthenticated) {
+                return RedirectToAction("UserInterface", "Account");
+            }
+
             ViewData["ReturnUrl"] = returnUrl;
             await Task.CompletedTask;
             return View();
@@ -187,25 +195,20 @@ namespace CompFix.Controllers
 
             var user = await _userManager.FindByEmailAsync(model.Email);
 
-            if(user != null)
-            {
-                var result = await _signInManager.PasswordSignInAsync(user.UserName!, model.Password, model.RememberMe, false);
+            if (user == null || await _userManager.IsInRoleAsync(user, "admin")) {
+                // Не дає увійти через звичайну форму адміну або неіснуючому користувачу
+                ModelState.AddModelError(string.Empty, "Невірний логін або пароль.");
+                return View(model);
+            }
 
-                // Якщо це admin, розлогінює і показує помилку
-                if (await _userManager.IsInRoleAsync(user, "admin")) {
-                    await _signInManager.SignOutAsync();
-                    ModelState.AddModelError(string.Empty, "Невірний логін або пароль.");
-                    return View(model);
-                }
+            var result = await _signInManager.PasswordSignInAsync(user.UserName!, model.Password, model.RememberMe, false);
 
                 if (result.Succeeded) {
-                    if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
-                    {
+                    if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl)) {
                         return Redirect(returnUrl);
                     }
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("UserInterface", "Account");
                 }
-            }
 
             ModelState.AddModelError(string.Empty, "Невірний логін або пароль.");
             return View(model);
