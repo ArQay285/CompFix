@@ -94,7 +94,11 @@ input[type="checkbox"] {
 }
 
 /* Layout */
+/* Хедер */
 .mainHeader {
+    position: sticky; /* Робить хедер липким при прокручуванні */
+    top: 0;
+    z-index: 1000;
     width: 100%;
     background: var(--bg-light);
     border-bottom: 2px solid rgba(108, 92, 231, 0.3);
@@ -302,17 +306,27 @@ input[type="checkbox"] {
     box-sizing: border-box;
     justify-content: center;
     align-items: center;
+    overflow: hidden; /* Для того щоб текст не розтягував блок */
+    min-width: 0;
 }
 
 .account-drawer__name {
     font-weight: 600;
     font-size: 16px;
     color: var(--primary-purple);
+    white-space: nowrap; /* Забороняє тексту переноситися на новий рядок */
+    overflow: hidden; /* Ховає все, що виходить за межі ширини блоку */
+    text-overflow: ellipsis; /* Додає "..." у місці обрізання */
+    max-width: 222px;
 }
 
 .account-drawer__email {
     font-size: 12px;
     color: var(--text-grey);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 222px;
 }
 
 .account-drawer__action-list {
