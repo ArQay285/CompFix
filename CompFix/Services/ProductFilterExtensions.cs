@@ -41,7 +41,7 @@ namespace CompFix.Services
             }
 
             
-            if (filter.Condition.HasValue && filter.Condition.Value > 0)
+            if (filter.Condition.HasValue && filter.Condition.Value >= 0)
             {
                 query = query.Where(p => p.Condition == (ItemCondition)filter.Condition.Value);
             }

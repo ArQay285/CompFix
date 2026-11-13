@@ -3,52 +3,50 @@
 	ViewData["Title"] = "Реєстрація";
 }
 
-<body>
-	<div class="login__container">
-		<div class="login__form-container">
-			<h2 class="login__form-title">Реєстрація</h2>
-			<form asp-action="Register" asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post" class="login__form" novalidate>
-				<!-- Виведення помилок валідації -->
-				<div asp-validation-summary="ModelOnly" class="login__validation-summary"></div>
-				<!-- Група полів для імені та прізвища користувача -->
-				<div class="login__form-full-name-group">
-					<!-- Поле для імені користувача -->
-					<div class="login__form-group-first-name">
-						<label asp-for="FirstName" class="login__form-label">Ім'я</label>
-						<input asp-for="FirstName" autocomplete="given-name" class="login__form-input" placeholder="Введіть ім'я" />
-						<span asp-validation-for="FirstName" class="login__validation-for"></span>
-					</div>
-					<!-- Поле для прізвища користувача -->
-					<div class="login__form-group-last-name">
-						<label asp-for="LastName" class="login__form-label">Прізвище</label>
-						<input asp-for="LastName" autocomplete="family-name" class="login__form-input" placeholder="Введіть прізвище" />
-						<span asp-validation-for="LastName" class="login__validation-for"></span>
-					</div>
+<div class="login__container">
+	<div class="login__form-container">
+		<h2 class="login__form-title">Реєстрація</h2>
+		<form asp-action="Register" asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post" class="login__form" novalidate>
+			<!-- Виведення помилок валідації -->
+			<div asp-validation-summary="ModelOnly" class="login__validation-summary"></div>
+			<!-- Група полів для імені та прізвища користувача -->
+			<div class="login__form-full-name-group">
+				<!-- Поле для імені користувача -->
+				<div class="login__form-first-name-group">
+					<label asp-for="FirstName" class="login__form-label">Ім'я</label>
+					<input asp-for="FirstName" autocomplete="given-name" class="login__form-input" placeholder="Введіть ім'я" />
+					<span asp-validation-for="FirstName" class="login__validation-for"></span>
 				</div>
-				<!-- Поле для електронної пошти -->
-				<div class="login__form-group">
-					<label asp-for="Email" class="login__form-label">Електронна пошта</label>
-					<input asp-for="Email" autocomplete="email" class="login__form-input" placeholder="Введіть електронну пошту" />
-					<span asp-validation-for="Email" class="login__validation-for"></span>
+				<!-- Поле для прізвища користувача -->
+				<div class="login__form-last-name-group">
+					<label asp-for="LastName" class="login__form-label">Прізвище</label>
+					<input asp-for="LastName" autocomplete="family-name" class="login__form-input" placeholder="Введіть прізвище" />
+					<span asp-validation-for="LastName" class="login__validation-for"></span>
 				</div>
-				<!-- Поле для пароля -->
-				<div class="login__form-group">
-					<label asp-for="Password" class="login__form-label">Пароль</label>
-					<input asp-for="Password" autocomplete="current-password" class="login__form-input" placeholder="Введіть пароль" />
-					<span asp-validation-for="Password" class="login__validation-for"></span>
-				</div>
-				<!-- Поле для підтвердження пароля -->
-				<div class="login__form-group">
-					<label asp-for="ConfirmPassword" class="login__form-label">Підтвердження пароля</label>
-					<input asp-for="ConfirmPassword" autocomplete="current-password" class="login__form-input" placeholder="Введіть пароль ще раз" />
-					<span asp-validation-for="ConfirmPassword" class="login__validation-for"></span>
-				</div>
-				<!-- Кнопка для відправки форми і кнопка для виходу -->
-				<div class="login__form-button-group">
-					<a asp-controller="Account" asp-action="UserInterface" class="login__btn-cancel">Вийти</a>
-					<button type="submit" class="login__btn-submit">Увійти</button>
-				</div>
-			</form>
-		</div>
+			</div>
+			<!-- Поле для електронної пошти -->
+			<div class="login__form-group">
+				<label asp-for="Email" class="login__form-label">Електронна пошта</label>
+				<input asp-for="Email" autocomplete="email" class="login__form-input" placeholder="Введіть електронну пошту" />
+				<span asp-validation-for="Email" class="login__validation-for"></span>
+			</div>
+			<!-- Поле для пароля -->
+			<div class="login__form-group">
+				<label asp-for="Password" class="login__form-label">Пароль</label>
+				<input asp-for="Password" autocomplete="current-password" class="login__form-input" placeholder="Введіть пароль" />
+				<span asp-validation-for="Password" class="login__validation-for"></span>
+			</div>
+			<!-- Поле для підтвердження пароля -->
+			<div class="login__form-group">
+				<label asp-for="ConfirmPassword" class="login__form-label">Підтвердження пароля</label>
+				<input asp-for="ConfirmPassword" autocomplete="current-password" class="login__form-input" placeholder="Введіть пароль ще раз" />
+				<span asp-validation-for="ConfirmPassword" class="login__validation-for"></span>
+			</div>
+			<!-- Кнопка для відправки форми і кнопка для виходу -->
+			<div class="login__form-button-group">
+				<a asp-controller="Account" asp-action="UserInterface" class="login__btn-cancel">Вийти</a>
+				<button type="submit" class="login__btn-submit">Увійти</button>
+			</div>
+		</form>
 	</div>
-</body>
+</div>

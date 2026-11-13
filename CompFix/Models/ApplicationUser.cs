@@ -11,7 +11,7 @@ namespace CompFix.Models
         public string? FirstName { get; set; }
 
         [PersonalData] // Вказує Identity, що це особисті дані користувача
-        [StringLength(60, ErrorMessage = "Призвище не може бути довшим за 60 символів.")]
+        [StringLength(60, ErrorMessage = "Прізвище не може бути довшим за 60 символів.")]
         public string? LastName { get; set; }
     }
 }

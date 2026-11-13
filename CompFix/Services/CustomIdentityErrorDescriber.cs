@@ -64,5 +64,14 @@ namespace CompFix.Services
                 Description = "Не вдалося завершити реєстрацію. Можливо, цей email вже використовується. Спробуйте увійти."
             };
         }
+
+        // Підтвердження старого паролю
+        public override IdentityError PasswordMismatch()
+        {
+            return new IdentityError {
+                Code = nameof(PasswordMismatch),
+                Description = "Невірно вказаний поточний пароль (старий)."
+            };
+        }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using CompFix.Models;
 using CompFix.Services;
 using CompFix.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -140,7 +141,7 @@ namespace CompFix.Controllers
                 ModelState.AddModelError("FirstName", "Ім'я не може бути порожнім або складатися лише з пробілів.");
             }
             if (string.IsNullOrWhiteSpace(cleanLastName)) {
-                ModelState.AddModelError("LastName", "Призвище не може бути порожнім або складатися лише з пробілів.");
+                ModelState.AddModelError("LastName", "Прізвище не може бути порожнім або складатися лише з пробілів.");
             }
 
             var user = new ApplicationUser {
@@ -221,6 +222,124 @@ namespace CompFix.Controllers
         {
             await _signInManager.SignOutAsync();
             return RedirectToAction("UserInterface", "Account");
+        }
+
+        // GET: /settings - сторінка налаштувань
+        [Authorize]
+        [HttpGet("settings")]
+        public async Task<IActionResult> Settings()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            // Якщо користувач не знайдений, перенаправляє на сторінку входу
+            if (user == null) {
+                return RedirectToAction("Login", "Account");
+            }
+
+            // Якщо адмін, кидає на головну
+            if (await _userManager.IsInRoleAsync(user, "admin")) {
+                return RedirectToAction("UserInterface", "Account");
+            }
+
+            // Підставляє поточне ім'я користувача у форму
+            var model = new UserSettingsViewModel {
+                FirstName = user.FirstName ?? string.Empty,
+                LastName = user.LastName ?? string.Empty
+            };
+
+            return View(model);
+        }
+
+        // POST: /settings — збереження нового імені та/або пароля
+        [Authorize]
+        [HttpPost("settings")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Settings(UserSettingsViewModel model)
+        {
+            string cleanFirstName = model.FirstName?.Trim() ?? string.Empty;
+            string cleanLastName = model.LastName?.Trim() ?? string.Empty;
+
+            if (string.IsNullOrWhiteSpace(cleanFirstName)) {
+                ModelState.AddModelError("FirstName", "Ім'я не може бути порожнім або складатися лише з пробілів.");
+            }
+            if (string.IsNullOrWhiteSpace(cleanLastName)) {
+                ModelState.AddModelError("LastName", "Прізвище не може бути порожнім або складатися лише з пробілів.");
+            }
+
+            if (!ModelState.IsValid) {
+                return View(model);
+            }
+
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null) {
+                return RedirectToAction("Login", "Account");
+            }
+
+            bool isUpdated = false;
+            bool isProfileInfoChanged = false;
+
+            // Чи змінили ім'я
+            if (user.FirstName != cleanFirstName) {
+                user.FirstName = cleanFirstName;
+                isProfileInfoChanged = true;
+            }
+
+            // Чи змінили прізвище
+            if (user.LastName != cleanLastName) {
+                user.LastName = cleanLastName;
+                isProfileInfoChanged = true;
+            }
+
+            // Якщо зміни в профілі є, оновлює користувача
+            if (isProfileInfoChanged) {
+                var updateProfileResult = await _userManager.UpdateAsync(user);
+                if (!updateProfileResult.Succeeded) {
+                    foreach (var error in updateProfileResult.Errors) {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
+                    return View(model);
+                }
+                isUpdated = true;
+            }
+
+            // Зміна пароля (якщо користувач заповнив хоча б одне поле пароля)
+            bool wantsToChangePassword = !string.IsNullOrEmpty(model.OldPassword) ||
+                                         !string.IsNullOrEmpty(model.NewPassword) ||
+                                         !string.IsNullOrEmpty(model.ConfirmNewPassword);
+
+            if (wantsToChangePassword) {
+                // Перевіряє, чи ввів користувач старий пароль
+                if (string.IsNullOrEmpty(model.OldPassword)) {
+                    ModelState.AddModelError(nameof(model.OldPassword), "Введіть поточний пароль для його зміни!");
+                    return View(model);
+                }
+
+                // Перевіряє, чи ввів користувач новий пароль
+                if (string.IsNullOrEmpty(model.NewPassword)) {
+                    ModelState.AddModelError(nameof(model.NewPassword), "Введіть новий пароль!");
+                    return View(model);
+                }
+
+                // Перевіряє, чи правильний старий та новий пароль
+                var changePasswordResult = await _userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
+
+                if (!changePasswordResult.Succeeded) {
+                    foreach (var error in changePasswordResult.Errors) {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                    }
+                    return View(model);
+                }
+
+                isUpdated = true;
+            }
+
+            // Оновлення сесії (кукі) та виведення повідомлення
+            if (isUpdated) {
+                // Оновлення кукі, щоб користувача не розлогінило після зміни пароля!
+                await _signInManager.RefreshSignInAsync(user);
+                TempData["StatusMessage"] = "Налаштування профілю успішно збережено!";
+            }
+
+            return RedirectToAction("Settings");
         }
     }
 }

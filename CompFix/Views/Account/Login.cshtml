@@ -3,36 +3,35 @@
 	ViewData["Title"] = "Вхід у профіль";
 }
 
-<body>
-	<div class="login__container">
-		<div class="login__form-container">
-			<h2 class="login__form-title">Вхід у профіль</h2>
-			<form asp-action="Login" asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post" class="login__form">
-				<!-- Виведення помилок валідації -->
-				<div asp-validation-summary="ModelOnly" class="login__validation-summary"></div>
-				<!-- Поле для пошти -->
-				<div class="login__form-group">
-					<label asp-for="Email" class="login__form-label">Пошта</label>
-					<input asp-for="Email" autocomplete="username" class="login__form-input" placeholder="Введіть пошту" />
-					<span asp-validation-for="Email" class="login__validation-for"></span>
-				</div>
-				<!-- Поле для пароля -->
-				<div class="login__form-group">
-					<label asp-for="Password" class="login__form-label">Пароль</label>
-					<input asp-for="Password" autocomplete="current-password" class="login__form-input" placeholder="Введіть пароль" />
-					<span asp-validation-for="Password" class="login__validation-for"></span>
-				</div>
-				<!-- Чекбокс запам'ятати мене -->
-				<div class="login__checkbox-group">
-					<input asp-for="RememberMe" />
-					<label asp-for="RememberMe">Запам'ятати мене?</label>
-				</div>
-				<!-- Кнопка для відправки форми і кнопка для виходу -->
-				<div class="login__form-button-group">
-					<a asp-controller="Account" asp-action="UserInterface" class="login__btn-cancel">Вийти</a>
-					<button type="submit" class="login__btn-submit">Увійти</button>
-				</div>
-			</form>
-		</div>
+
+<div class="login__container">
+	<div class="login__form-container">
+		<h2 class="login__form-title">Вхід у профіль</h2>
+		<form asp-action="Login" asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post" class="login__form" novalidate>
+			<!-- Виведення помилок валідації -->
+			<div asp-validation-summary="ModelOnly" class="login__validation-summary"></div>
+			<!-- Поле для пошти -->
+			<div class="login__form-group">
+				<label asp-for="Email" class="login__form-label">Пошта</label>
+				<input asp-for="Email" autocomplete="username" class="login__form-input" placeholder="Введіть пошту" />
+				<span asp-validation-for="Email" class="login__validation-for"></span>
+			</div>
+			<!-- Поле для пароля -->
+			<div class="login__form-group">
+				<label asp-for="Password" class="login__form-label">Пароль</label>
+				<input asp-for="Password" autocomplete="current-password" class="login__form-input" placeholder="Введіть пароль" />
+				<span asp-validation-for="Password" class="login__validation-for"></span>
+			</div>
+			<!-- Чекбокс запам'ятати мене -->
+			<div class="login__checkbox-group">
+				<input asp-for="RememberMe" />
+				<label asp-for="RememberMe">Запам'ятати мене?</label>
+			</div>
+			<!-- Кнопка для відправки форми і кнопка для виходу -->
+			<div class="login__form-button-group">
+				<a asp-controller="Account" asp-action="UserInterface" class="login__btn-cancel">Вийти</a>
+				<button type="submit" class="login__btn-submit">Увійти</button>
+			</div>
+		</form>
 	</div>
-</body>
+</div>

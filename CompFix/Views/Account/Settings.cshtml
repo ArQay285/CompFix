@@ -1,0 +1,63 @@
+﻿@model UserSettingsViewModel
+@{
+	ViewData["Title"] = "Налаштування профілю";
+}
+
+<div class="settings__container">
+	<div class="settings__form-container">
+		<h2 class="settings__form-title">Налаштування профілю</h2>
+		<!-- Повідомлення про успішне збереження -->
+		@if (TempData["StatusMessage"] != null) {
+			<div class="settings__status-message">
+				@TempData["StatusMessage"]
+			</div>
+		}
+		<form asp-action="Settings" asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post" class="settings__form">
+			<!-- Виведення помилок валідації -->
+			<div asp-validation-summary="ModelOnly" class="settings__validation-summary"></div>
+			<div class="settings__form-text-group">
+				<h3 class="settings__form-subtitle">Зміна імені та прізвища</h3>
+			</div>
+			<div class="settings__form-full-name-group">
+				<!-- Поле для імені користувача -->
+				<div class="settings__form-first-name-group">
+					<label asp-for="FirstName" class="settings__form-label">Ім'я</label>
+					<input asp-for="FirstName" autocomplete="given-name" class="settings__form-input" placeholder="Введіть ім'я">
+					<span asp-validation-for="FirstName" class="settings__validation-for"></span>
+				</div>
+				<!-- Поле для прізвища користувача -->
+				<div class="settings__form-last-name-group">
+					<label asp-for="LastName" class="settings__form-label">Прізвище</label>
+					<input asp-for="LastName" autocomplete="family-name" class="settings__form-input" placeholder="Введіть прізвище">
+					<span asp-validation-for="LastName" class="settings__validation-for"></span>
+				</div>
+			</div>
+			<div class="settings__form-text-group">
+				<h3 class="settings__form-subtitle">Зміна пароля</h3>
+				<p class="settings__form-subtext">Заповнюйте поля нижче лише у тому випадку, якщо хочете змінити пароль</p>
+			</div>
+			<!-- Поле для поточного (старого) пароля -->
+			<div class="settings__form-group">
+				<label asp-for="OldPassword" class="settings__form-label">Поточний пароль (старий)</label>
+				<input asp-for="OldPassword" autocomplete="current-password" class="settings__form-input" placeholder="Введіть поточний пароль">
+				<span asp-validation-for="OldPassword" class="settings__validation-for"></span>
+			</div>
+			<!-- Поле для нового пароля -->
+			<div class="settings__form-group">
+				<label asp-for="NewPassword" class="settings__form-label">Новий пароль</label>
+				<input asp-for="NewPassword" class="settings__form-input" placeholder="Введіть новий пароль">
+				<span asp-validation-for="NewPassword" class="settings__validation-for"></span>
+			</div>
+			<div class="settings__form-group">
+				<label asp-for="ConfirmNewPassword" class="settings__form-label">Підтвердження нового пароля</label>
+				<input asp-for="ConfirmNewPassword" class="settings__form-input" placeholder="Введіть новий пароль ще раз">
+				<span asp-validation-for="ConfirmNewPassword" class="settings__validation-for"></span>
+			</div>
+			<!-- Кнопка для відправки форми і кнопка для виходу -->
+			<div class="login__form-button-group">
+				<a asp-controller="Account" asp-action="UserInterface" class="settings__btn-cancel">Назад</a>
+				<button type="submit" class="settings__btn-submit">Зберегти зміни</button>
+			</div>
+		</form>
+	</div>
+</div>

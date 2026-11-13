@@ -10,10 +10,10 @@ namespace CompFix.ViewModels
         [StringLength(60, ErrorMessage = "Ім'я не може бути довшим за 60 символів.")]
         public string FirstName { get; set; } = string.Empty;
 
-        [Required(ErrorMessage = "Введіть Призвище!")]
-        [Display(Name = "Призвище")]
-        [RegularExpression(@"^[a-zA-Zа-яА-ЯіІїЇєЄґҐ' -]+$", ErrorMessage = "Призвище може містити лише літери, пробіл або дефіс.")]
-        [StringLength(60, ErrorMessage = "Призвище не може бути довшим за 60 символів.")]
+        [Required(ErrorMessage = "Введіть Прізвище!")]
+        [Display(Name = "Прізвище")]
+        [RegularExpression(@"^[a-zA-Zа-яА-ЯіІїЇєЄґҐ' -]+$", ErrorMessage = "Прізвище може містити лише літери, пробіл або дефіс.")]
+        [StringLength(60, ErrorMessage = "Прізвище не може бути довшим за 60 символів.")]
         public string LastName { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Введіть електронну пошту!")]

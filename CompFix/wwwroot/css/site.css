@@ -5,7 +5,7 @@
     --bg-light: #F8F9FA;
     --text-dark: #2D3436;
     --text-grey: #636e72;
-    --accent-teal: #00CEC9;
+    --accent-teal: #00c3be;
     --validation-red: #d9534f;
     --light-grey: #f8f9fa;
     --dark-grey: #212529
@@ -366,19 +366,19 @@ input[type="checkbox"] {
         background-color: var(--hover-purple)
     }
 
-/* Login, Register */
-.login__container {
+/* Login, Register, Settings */
+.login__container, .settings__container {
     margin-top: 50px;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.login__form-container {
+.login__form-container, .settings__form-container {
     width: 450px;
 }
 
-.login__form-title {
+.login__form-title, .settings__form-title {
     display: flex;
     margin-bottom: 12px;
     padding-bottom: 1px;
@@ -387,39 +387,42 @@ input[type="checkbox"] {
     border-bottom: 2px solid rgba(108, 92, 231, 0.3);
 }
 
-.login__validation-summary:not(:empty) {
+.login__validation-summary:not(:empty), .settings__validation-summary:not(:empty) {
     color: var(--validation-red);
-    border-radius: 8px;
     font-size: 13px;
 }
 
-.login__validation-for {
+.login__validation-for, .settings__validation-for {
     color: var(--validation-red);
     font-size: 13px;
     margin-top: 4px;
 }
 
-.login__form-group, .login__form-full-name-group {
+.login__form-group, .login__form-full-name-group, .settings__form-group, .settings__form-full-name-group {
     display: flex;
     flex-direction: column;
     margin-bottom: 12px;
 }
 
-.login__form-full-name-group {
+.login__form-full-name-group, .settings__form-full-name-group {
     flex-direction: row;
     gap: 10px;
 }
 
-.login__form-label {
+.login__form-label, .settings__form-label {
     margin-bottom: 4px;
     font-weight: bold;
 }
 
 .login__form-group input[type="email"],
-.login__form-group-first-name input[type="text"],
-.login__form-group-last-name input[type="text"],
+.login__form-first-name-group input[type="text"],
+.login__form-last-name-group input[type="text"],
 .login__form-group input[type="text"],
-.login__form-group input[type="password"] {
+.login__form-group input[type="password"],
+.settings__form-first-name-group input[type="text"],
+.settings__form-last-name-group input[type="text"],
+.settings__form-group input[type="text"],
+.settings__form-group input[type="password"] {
     width: 100%;
     padding: 12px;
     border: 1px solid #ccc;
@@ -429,11 +432,15 @@ input[type="checkbox"] {
     transition: border-color 0.2s;
 }
 
-.login__form-group-first-name, .login__form-group-last-name {
+.login__form-first-name-group,
+.login__form-last-name-group,
+.settings__form-first-name-group,
+.settings__form-last-name-group {
     width: 100%;
 }
 
-.login__form-group input:focus {
+.login__form-group input:focus,
+.settings__form-group input:focus {
     outline: solid 1px var(--primary-purple);
 }
 
@@ -442,18 +449,23 @@ input[type="checkbox"] {
     font-weight: bold;
 }
 
-.login__form-button-group {
+.login__form-button-group,
+.settings__form-button-group {
     display: flex;
     margin-bottom: 12px;
     align-items: center;
     justify-content: space-between;
 }
 
-.login__btn-submit, .login__btn-cancel {
+.login__btn-submit,
+.login__btn-cancel,
+.settings__btn-submit,
+.settings__btn-cancel {
     padding: 0 30px;
 }
 
-.login__btn-cancel {
+.login__btn-cancel,
+.settings__btn-cancel {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -467,10 +479,53 @@ input[type="checkbox"] {
     border-radius: 8px;
 }
 
-    .login__btn-cancel:hover {
-        background-color: #f5f6fa;  
+    .login__btn-cancel:hover,
+    .settings__btn-cancel:hover {
+        background-color: #f5f6fa;
         border-color: #c3d1e0;
     }
+
+/* Settings */
+
+.settings__form-text-group {
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 12px;
+    border-radius: 8px;
+    border: 2px solid rgba(108, 92, 231, 0.3);
+}
+
+.settings__form-subtitle {
+    color: var(--primary-purple);
+    font-weight: 600;
+    font-size: 25px;
+    margin-bottom: 0px;
+    display: flex;
+    justify-content: center;
+}
+
+.settings__form-subtext {
+    font-size: 12px;
+    color: var(--text-grey);
+    margin: 0;
+    display: flex;
+    justify-content: center;
+}
+
+.settings__validation-summary,
+.settings__validation-summary li,
+.settings__status-message {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 15px;
+    margin-bottom: 3px;
+}
+
+.settings__status-message {
+    color: var(--accent-teal);
+}
 
 /* Для адміністраторської панелі */
 .form-control:focus,
