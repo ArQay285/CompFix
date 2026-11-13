@@ -55,8 +55,9 @@ namespace CompFix.Controllers
                     ProductName = product.Name,
                     Price = product.Price,
                     Quantity = 1,
+                    Discount = product.Discount,
                     ImageUrl = product.ImageUrl,
-                        Cart_Condition = product.Condition,
+                    Cart_Condition = product.Condition,
                     Cart_DiscountedPrice = product.DiscountedPrice
                 };
 

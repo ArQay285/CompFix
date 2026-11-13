@@ -83,7 +83,7 @@
                             
                             <div class="cart-item__action">
                                 <div class="cart-item__price-block">
-                                    @if (item.Cart_DiscountedPrice > 0 && item.Cart_DiscountedPrice < item.Price)
+                                    @if (item.Discount > 0)
                                     {
                                         <div class="cart-item__price text-purple">@((item.Cart_DiscountedPrice * item.Quantity).ToString("N0")) ₴</div>
                                         <div class="cart-item__old-price">@((item.Price * item.Quantity).ToString("N0")) ₴</div>

@@ -109,6 +109,9 @@ namespace CompFix.Migrations
                     b.Property<decimal>("Cart_DiscountedPrice")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<int>("Discount")
+                        .HasColumnType("int");
+
                     b.Property<string>("ImageUrl")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
