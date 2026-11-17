@@ -37,8 +37,6 @@ namespace CompFix
                 new Category { id = 9, Name = "Відеокарти" },
                 new Category { id = 10, Name = "Материнські плати" },
                 new Category { id = 11, Name = "Оперативна пам'ять" },
-                new Category { id = 12, Name = "Вібратори"},
-                new Category { id = 13, Name = "Люди" },
                 new Category { id = 14, Name = "Монітори" },
                 new Category { id = 15, Name = "Побутова техніка"}
 
