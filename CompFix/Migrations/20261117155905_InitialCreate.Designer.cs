@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CompFix.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20261111155128_AddUserIdToCartItem")]
-    partial class AddUserIdToCartItem
+    [Migration("20261117155905_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -106,6 +106,19 @@ namespace CompFix.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("Cart_Condition")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Cart_DiscountedPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("Discount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
@@ -158,12 +171,12 @@ namespace CompFix.Migrations
                         new
                         {
                             id = 16,
-                            Name = "Ігрові комп'ютери"
+                            Name = "Мишки"
                         },
                         new
                         {
                             id = 17,
-                            Name = "Ігрові ноутбуки"
+                            Name = "Клавіатури"
                         },
                         new
                         {
@@ -178,7 +191,7 @@ namespace CompFix.Migrations
                         new
                         {
                             id = 5,
-                            Name = "Аксесуари"
+                            Name = "Коврики для мишки"
                         },
                         new
                         {
@@ -188,7 +201,7 @@ namespace CompFix.Migrations
                         new
                         {
                             id = 7,
-                            Name = "Телевізори"
+                            Name = "Материнські плати"
                         },
                         new
                         {
@@ -203,7 +216,7 @@ namespace CompFix.Migrations
                         new
                         {
                             id = 10,
-                            Name = "Материнські плати"
+                            Name = "Блоки живлення"
                         },
                         new
                         {
@@ -213,22 +226,22 @@ namespace CompFix.Migrations
                         new
                         {
                             id = 12,
-                            Name = "Вібратори"
+                            Name = "Жорсткі диски"
                         },
                         new
                         {
                             id = 13,
-                            Name = "Люди"
+                            Name = "Корпуси для комп'ютерів"
                         },
                         new
                         {
                             id = 14,
-                            Name = "Монітори"
+                            Name = "Охолодження"
                         },
                         new
                         {
                             id = 15,
-                            Name = "Побутова техніка"
+                            Name = "Монітори"
                         });
                 });
 
@@ -259,8 +272,9 @@ namespace CompFix.Migrations
                     b.Property<DateTime>("DateTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsPaid")
-                        .HasColumnType("bit");
+                    b.Property<string>("PaymentMethod")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("TotalAmount")
                         .HasColumnType("decimal(18,2)");

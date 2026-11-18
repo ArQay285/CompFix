@@ -168,12 +168,12 @@ namespace CompFix.Migrations
                         new
                         {
                             id = 16,
-                            Name = "Ігрові комп'ютери"
+                            Name = "Мишки"
                         },
                         new
                         {
                             id = 17,
-                            Name = "Ігрові ноутбуки"
+                            Name = "Клавіатури"
                         },
                         new
                         {
@@ -188,7 +188,7 @@ namespace CompFix.Migrations
                         new
                         {
                             id = 5,
-                            Name = "Аксесуари"
+                            Name = "Коврики для мишки"
                         },
                         new
                         {
@@ -198,7 +198,7 @@ namespace CompFix.Migrations
                         new
                         {
                             id = 7,
-                            Name = "Телевізори"
+                            Name = "Материнські плати"
                         },
                         new
                         {
@@ -213,7 +213,7 @@ namespace CompFix.Migrations
                         new
                         {
                             id = 10,
-                            Name = "Материнські плати"
+                            Name = "Блоки живлення"
                         },
                         new
                         {
@@ -223,22 +223,22 @@ namespace CompFix.Migrations
                         new
                         {
                             id = 12,
-                            Name = "Вібратори"
+                            Name = "Жорсткі диски"
                         },
                         new
                         {
                             id = 13,
-                            Name = "Люди"
+                            Name = "Корпуси для комп'ютерів"
                         },
                         new
                         {
                             id = 14,
-                            Name = "Монітори"
+                            Name = "Охолодження"
                         },
                         new
                         {
                             id = 15,
-                            Name = "Побутова техніка"
+                            Name = "Монітори"
                         });
                 });
 
