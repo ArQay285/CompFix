@@ -89,6 +89,7 @@ namespace CompFix.Controllers
         {
             ModelState.Remove(nameof(product.ImageUrl));
             ModelState.Remove(nameof(product.Category));
+            ModelState.Remove(nameof(product.Discount));
             if (ModelState.IsValid)
             {
 

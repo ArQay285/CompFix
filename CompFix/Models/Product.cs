@@ -18,7 +18,7 @@ namespace CompFix.Models
         [StringLength(200, ErrorMessage = "Опис не має перевищувати 200 символів")]
         public string Description { get; set; } = string.Empty;
         [Required(ErrorMessage = "Вкажіть ціну")]
-        [Range(0.01, 1000000, ErrorMessage = "Ціна має бути більше 0")]
+        [Range(0.01,10000000000000,ErrorMessage = "Ціна має бути більше 0 або не перевищувати 10000000000000")]
         public decimal Price { get; set; }
         [Required(ErrorMessage = "Вкажіть кількість")]
         [Range(0, 10000, ErrorMessage = "Кількість не може бути від'ємною")]
@@ -26,7 +26,6 @@ namespace CompFix.Models
         public ItemCondition Condition { get; set; } = ItemCondition.New;
         public DateTime CreatedAt { get; set; } = DateTime.Now;
         //  Поле знижки у відсотках (від 0 до 100)
-        [Required(ErrorMessage = "Вкажіть знижку")]
         [Range(0, 100, ErrorMessage = "Знижка має бути від 0 до 100")]
         public int Discount { get; set; } = 0;
         // Обчислювана ціна з урахуванням знижки

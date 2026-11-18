@@ -222,16 +222,6 @@ namespace CompFix.Migrations
                         },
                         new
                         {
-                            id = 12,
-                            Name = "Вібратори"
-                        },
-                        new
-                        {
-                            id = 13,
-                            Name = "Люди"
-                        },
-                        new
-                        {
                             id = 14,
                             Name = "Монітори"
                         },
